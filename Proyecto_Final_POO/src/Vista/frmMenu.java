@@ -26,17 +26,17 @@ public class frmMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnAgregarAdmin = new javax.swing.JButton();
+        btnEditarCatalogo = new javax.swing.JButton();
         btnRegistroVenta = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        btnCerrarSesion = new javax.swing.JButton();
+        lblMenuTitulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Agregar administrador");
+        btnAgregarAdmin.setText("Agregar administrador");
 
-        jButton2.setText("Administrar catálogo");
+        btnEditarCatalogo.setText("Administrar catálogo");
 
         btnRegistroVenta.setText("Registrar venta");
         btnRegistroVenta.addActionListener(new java.awt.event.ActionListener() {
@@ -45,10 +45,10 @@ public class frmMenu extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("Cerrar sesión");
+        btnCerrarSesion.setText("Cerrar sesión");
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
-        jLabel1.setText("Menú");
+        lblMenuTitulo.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
+        lblMenuTitulo.setText("Menú");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -59,28 +59,28 @@ public class frmMenu extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(123, 123, 123)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(jButton2)
-                            .addComponent(jButton1)
+                            .addComponent(btnEditarCatalogo)
+                            .addComponent(btnAgregarAdmin)
                             .addComponent(btnRegistroVenta)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(lblMenuTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(25, 25, 25)
-                        .addComponent(jButton4)))
+                        .addComponent(btnCerrarSesion)))
                 .addContainerGap(126, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(32, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addComponent(lblMenuTitulo)
                 .addGap(35, 35, 35)
-                .addComponent(jButton1)
+                .addComponent(btnAgregarAdmin)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(btnEditarCatalogo)
                 .addGap(18, 18, 18)
                 .addComponent(btnRegistroVenta)
                 .addGap(57, 57, 57)
-                .addComponent(jButton4)
+                .addComponent(btnCerrarSesion)
                 .addGap(16, 16, 16))
         );
 
@@ -129,10 +129,10 @@ public class frmMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregarAdmin;
+    private javax.swing.JButton btnCerrarSesion;
+    private javax.swing.JButton btnEditarCatalogo;
     private javax.swing.JButton btnRegistroVenta;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lblMenuTitulo;
     // End of variables declaration//GEN-END:variables
 }
