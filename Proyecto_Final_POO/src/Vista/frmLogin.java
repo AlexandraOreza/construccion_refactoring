@@ -127,8 +127,8 @@ public class frmLogin extends javax.swing.JFrame {
         compContra = txtContra.getText();
         compUsuario = txtUsuario.getText();
         if (compUsuario.matches("Erick Gomez") && compContra.matches("Wargreymon1") ||  (compUsuario.matches("Becky Zhu"))&& compContra.matches("Joaquin Murrieta")){
-            frmCliente ClienteVenta = new frmCliente();
-            ClienteVenta.setVisible(true);
+            frmMenu menuVista = new frmMenu();
+            menuVista.setVisible(true);
             this.dispose();        
         } else {
             JOptionPane.showMessageDialog(null, "Verifica los datos nuevamente");
