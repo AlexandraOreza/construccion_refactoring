@@ -238,6 +238,7 @@ public class frmAdministrador extends javax.swing.JFrame {
             int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estas seguro de eliminar al administrador?", "Aviso", 0);
             if (confirmacion == 0) {
                 metodosAdministrador.eliminarDatosAdministrador(administrador);
+                csv.deleteRow(administrador.getIdAdministrador());
                 guardarContenidoTXT();
                 inicializarTablaAdministradores();
                 limpiarCeldas(panelRegistro);

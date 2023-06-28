@@ -19,6 +19,7 @@ import java.io.IOException;
  * @author Alexandra
  */
 public class CSV {
+
     private static final String path = "src\\backupFilesTienda\\";
 
     private List<String> readFile(String fileName) {
@@ -58,7 +59,7 @@ public class CSV {
     public void modifyRow(int idRow, Object modifiedData) {
         //necesito cambiar esto
         List<String> data = readFile(empleadosPath);
-        for(String row : data){
+        for (String row : data) {
             System.out.println(row);
         }
         if (data != null && idRow >= 0 && idRow < data.size()) {
@@ -78,6 +79,30 @@ public class CSV {
             }
         } else {
             System.out.println("Invalid file or row index.");
+        }
+    }
+
+    public void deleteRow(int idRow) {
+        List<String> data = readFile(empleadosPath);
+
+        if (data != null && idRow > 0 && idRow <= data.size()) {
+            data.remove(idRow - 1);
+
+            try {
+                FileWriter csvWriter = new FileWriter(empleadosPath, false);
+
+                for (String line : data) {
+                    csvWriter.write(line);
+                    csvWriter.write(System.lineSeparator());
+                }
+
+                csvWriter.close();
+                System.out.println("Row deleted successfully.");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Invalid file or row ID.");
         }
     }
 
