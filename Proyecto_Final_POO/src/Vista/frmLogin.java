@@ -4,6 +4,10 @@
  */
 package Vista;
 
+import Modelo.Administrador;
+import Modelo.MetodosAdministrador;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,6 +19,9 @@ public class frmLogin extends javax.swing.JFrame {
     /**
      * Creates new form frmLogin
      */
+    Administrador administrador;
+    MetodosAdministrador metodosAdministrador;
+            
     public frmLogin() {
         initComponents();
     }
@@ -123,12 +130,32 @@ public class frmLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-       String compUsuario, compContra;
+        String compUsuario, compContra;
         compContra = txtContra.getText();
         compUsuario = txtUsuario.getText();
-        if (compUsuario.matches("Erick Gomez") && compContra.matches("Wargreymon1") ||  (compUsuario.matches("Becky Zhu"))&& compContra.matches("Joaquin Murrieta")){
+        boolean matchedPasswords = false;
+        try{
+            FileInputStream file = new FileInputStream("Administradores.txt");
+            ObjectInputStream input = new ObjectInputStream(file);
+            if(input != null){
+                metodosAdministrador = (MetodosAdministrador)input.readObject();
+                input.close();
+            }
+        }catch(Exception exception){
+            System.out.println(exception);
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo");
+        }
+        for (int i = 0; i < metodosAdministrador.cantidadAdministradorRegistrados(); i++) {
+            administrador = metodosAdministrador.obtenerDatosAdministrador(i);
+            if(compContra.matches(administrador.getContrasenia()) && compUsuario.matches(administrador.getUsuario())) {
+                matchedPasswords = true;
+            }
+        }
+        
+        if (matchedPasswords == true){
             frmMenu menuVista = new frmMenu();
             menuVista.setVisible(true);
+            matchedPasswords = false;
             this.dispose();        
         } else {
             JOptionPane.showMessageDialog(null, "Verifica los datos nuevamente");
