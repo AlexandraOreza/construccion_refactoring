@@ -162,10 +162,9 @@ public class frmAdministrador extends javax.swing.JFrame {
             }
         }
     }
-
+    CSV csv = new CSV();
     public void guardarAdministrador() {
         try {
-            CSV csv = new CSV();
             // que es -666
             //Cambiar el manejo de errores
             if (leerIDTextField() == -666) {
@@ -223,6 +222,7 @@ public class frmAdministrador extends javax.swing.JFrame {
                     metodosAdministrador.agregarDatosAdministrador(administrador);
                 } else {
                     metodosAdministrador.modificarDatosAdministrador((int) idAdministrador, administrador);
+                    csv.modifyRow(idAdministrador, administrador);
                 }
                 guardarContenidoTXT();
                 inicializarTablaAdministradores();
