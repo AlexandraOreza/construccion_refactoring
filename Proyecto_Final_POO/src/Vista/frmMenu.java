@@ -14,7 +14,7 @@ public class frmMenu extends javax.swing.JFrame {
      * Creates new form frmMenu
      */
     public frmMenu() {
-        initComponents();
+        initComponents();   
     }
 
     /**
@@ -35,6 +35,11 @@ public class frmMenu extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnAgregarAdmin.setText("Agregar administrador");
+        btnAgregarAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarAdminActionPerformed(evt);
+            }
+        });
 
         btnEditarCatalogo.setText("Administrar catálogo");
 
@@ -74,7 +79,7 @@ public class frmMenu extends javax.swing.JFrame {
                 .addContainerGap(32, Short.MAX_VALUE)
                 .addComponent(lblMenuTitulo)
                 .addGap(35, 35, 35)
-                .addComponent(btnAgregarAdmin)
+                .addComponent(btnAgregarAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnEditarCatalogo)
                 .addGap(18, 18, 18)
@@ -92,6 +97,12 @@ public class frmMenu extends javax.swing.JFrame {
         ClienteVenta.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegistroVentaActionPerformed
+
+    private void btnAgregarAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarAdminActionPerformed
+        frmAdministrador AdministradorPanel = new frmAdministrador();
+        AdministradorPanel.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnAgregarAdminActionPerformed
 
     /**
      * @param args the command line arguments
