@@ -16,18 +16,19 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import Modelo.CSV;
 
 /**
  *
  * @author mario
  */
 public class frmAdministrador extends javax.swing.JFrame {
- 
+
     // Variables de instancia
     private String rutaArchivo = "Administradores.txt";
     Administrador administrador;
     MetodosAdministrador metodosAdministrador;
-    
+
     public void inicializarTablaAdministradores() {
         DefaultTableModel titulos = new DefaultTableModel() {
             @Override
@@ -57,193 +58,206 @@ public class frmAdministrador extends javax.swing.JFrame {
         tabla_consultaAdministradores.setModel(titulos);
         tabla_consultaAdministradores.setRowHeight(60);
     }
-    
+
     // Metodos para leer los campos ingresados por registrar
-    public int leerIDTextField(){
-        try{
+    public int leerIDTextField() {
+        try {
             int idAdministrador = Integer.parseInt(texto_ID.getText().trim());
             return idAdministrador;
-        }catch (Exception exception){
+        } catch (Exception exception) {
             return -666;
         }
     }
-    public String leerNombreTextField(){
-        try{
+
+    public String leerNombreTextField() {
+        try {
             String nombre = texto_nombre.getText().trim().replace(" ", " ");
             return nombre;
-        }catch (Exception exception){
+        } catch (Exception exception) {
             return null;
         }
     }
+
     public String leerApellidoPaternoTextField() {
-        try{
+        try {
             String apellidoPaterno = texto_apellidoP.getText().trim().replace(" ", " ");
             return apellidoPaterno;
-        }catch (Exception exception){
+        } catch (Exception exception) {
             return null;
         }
     }
+
     public String leerApellidoMaternoTextField() {
-        try{
+        try {
             String apellidoMaterno = texto_apellidoM.getText().trim().replace(" ", " ");
             return apellidoMaterno;
-        }catch (Exception exception){
+        } catch (Exception exception) {
             return null;
         }
     }
-    public double leerSueldoTextField(){
-        try{
+
+    public double leerSueldoTextField() {
+        try {
             double sueldo = Double.parseDouble(texto_sueldo.getText().trim());
             return sueldo;
-        }catch(Exception exception){
+        } catch (Exception exception) {
             return -666;
         }
     }
-    public String leerUsuarioTextField(){
-        try{
+
+    public String leerUsuarioTextField() {
+        try {
             String usuarioTxt = usuario.getText().trim();
             return usuarioTxt;
-        }catch(Exception exception){
+        } catch (Exception exception) {
             return null;
         }
     }
-    
+
     private String leerContraseniaTextField() {
-         try{
+        try {
             String contraseniaTxt = contrasenia.getText().trim();
             return contraseniaTxt;
-        }catch(Exception exception){
+        } catch (Exception exception) {
             return null;
         }
     }
 
     // Metodos para poder leer y guardar el contenido del archivo de texto
-    public void verContenidoTXT(){
-        try{
+    public void verContenidoTXT() {
+        try {
             FileInputStream file = new FileInputStream(rutaArchivo);
             ObjectInputStream input = new ObjectInputStream(file);
-            if(input != null){
-                metodosAdministrador = (MetodosAdministrador)input.readObject();
+            if (input != null) {
+                metodosAdministrador = (MetodosAdministrador) input.readObject();
                 input.close();
             }
-        }catch(Exception exception){
+        } catch (Exception exception) {
             System.out.println(exception);
             JOptionPane.showMessageDialog(null, "Error al leer el archivo");
         }
     }
-    public void guardarContenidoTXT(){
-        try{
+
+    public void guardarContenidoTXT() {
+        try {
             FileOutputStream file = new FileOutputStream(rutaArchivo);
             ObjectOutputStream output = new ObjectOutputStream(file);
-            if(output != null){
+            if (output != null) {
                 output.writeObject(metodosAdministrador);
                 output.close();
             }
-        }catch(Exception exception){
+        } catch (Exception exception) {
             System.out.println(exception.getStackTrace());
             JOptionPane.showMessageDialog(null, "Error al guardar el archivo");
         }
     }
-    
+
     // Metodo para quitar el contenido de las celdas al guardar
-    public void limpiarCeldas(JPanel jPanel){
-        for(int i = 0; jPanel.getComponents().length > i; i++){
-            if(jPanel.getComponents()[i] instanceof JTextField){
-                ((JTextField)jPanel.getComponents()[i]).setText("");
-            }else if(jPanel.getComponents()[i] instanceof JPasswordField){
-                ((JPasswordField)jPanel.getComponents()[i]).setText("");
+    public void limpiarCeldas(JPanel jPanel) {
+        for (int i = 0; jPanel.getComponents().length > i; i++) {
+            if (jPanel.getComponents()[i] instanceof JTextField) {
+                ((JTextField) jPanel.getComponents()[i]).setText("");
+            } else if (jPanel.getComponents()[i] instanceof JPasswordField) {
+                ((JPasswordField) jPanel.getComponents()[i]).setText("");
             }
         }
     }
-    
-    public void guardarAdministrador(){
-        try{
-            if(leerIDTextField() == -666){
+
+    public void guardarAdministrador() {
+        try {
+            CSV csv = new CSV();
+            // que es -666
+            //Cambiar el manejo de errores
+            if (leerIDTextField() == -666) {
                 JOptionPane.showMessageDialog(null, "Ingrese un numero entero");
-            }else if(leerNombreTextField().equals("")){
+            } else if (leerNombreTextField().equals("")) {
                 JOptionPane.showMessageDialog(null, "Ingrese el nombre");
-            }else if(leerApellidoPaternoTextField().equals("")){
+            } else if (leerApellidoPaternoTextField().equals("")) {
                 JOptionPane.showMessageDialog(null, "Ingrese el apellido paterno");
-            }else if(leerApellidoMaternoTextField().equals("")){
+            } else if (leerApellidoMaternoTextField().equals("")) {
                 JOptionPane.showMessageDialog(null, "Ingrese el apellido materno");
-            }else if(leerSueldoTextField() == -666){
+            } else if (leerSueldoTextField() == -666) {
                 JOptionPane.showMessageDialog(null, "Ingrese el sueldo");
-            }else if(leerUsuarioTextField().equals("")){
+            } else if (leerUsuarioTextField().equals("")) {
                 JOptionPane.showMessageDialog(null, "Ingrese el usuario");
-            }else if(leerContraseniaTextField().equals("")){
+            } else if (leerContraseniaTextField().equals("")) {
                 JOptionPane.showMessageDialog(null, "Ingrese la contraseña");
-            }else{
+            } else {
                 administrador = new Administrador(leerNombreTextField(), leerApellidoPaternoTextField(), leerApellidoMaternoTextField(), leerSueldoTextField(), leerUsuarioTextField(), leerIDTextField(), leerContraseniaTextField());
-                if((metodosAdministrador.compararExistenteID((int)administrador.getIdAdministrador()))!= (-1)){
+                if ((metodosAdministrador.compararExistenteID((int) administrador.getIdAdministrador())) != (-1)) {
                     JOptionPane.showMessageDialog(null, "Este ID ya ha sido asginado");
-                }else{
+                } else {
                     metodosAdministrador.agregarDatosAdministrador(administrador);
+                    csv.addEmpleado(administrador);
+                    guardarContenidoTXT();
+                    inicializarTablaAdministradores();
+                    limpiarCeldas(panelRegistro);
                 }
-                guardarContenidoTXT();
-                inicializarTablaAdministradores();
-                limpiarCeldas(panelRegistro);
+
             }
-        }catch (Exception exception) {
+        } catch (Exception exception) {
             JOptionPane.showMessageDialog(null, "Error al guardar administrador");
         }
     }
-    public void modificarAdministrador(){
-        try{
-            if(leerIDTextField() == -666){
+
+    public void modificarAdministrador() {
+        try {
+            if (leerIDTextField() == -666) {
                 JOptionPane.showMessageDialog(null, "Ingrese un numero entero");
-            }else if(leerNombreTextField().equals("")){
+            } else if (leerNombreTextField().equals("")) {
                 JOptionPane.showMessageDialog(null, "Ingrese el nombre");
-            }else if(leerApellidoPaternoTextField().equals("")){
+            } else if (leerApellidoPaternoTextField().equals("")) {
                 JOptionPane.showMessageDialog(null, "Ingrese el apellido paterno");
-            }else if(leerApellidoMaternoTextField().equals("")){
+            } else if (leerApellidoMaternoTextField().equals("")) {
                 JOptionPane.showMessageDialog(null, "Ingrese el apellido materno");
-            }else if(leerSueldoTextField() == -666){
+            } else if (leerSueldoTextField() == -666) {
                 JOptionPane.showMessageDialog(null, "Ingrese el sueldo");
-            }else if(leerUsuarioTextField().equals("")){
+            } else if (leerUsuarioTextField().equals("")) {
                 JOptionPane.showMessageDialog(null, "Ingrese el nombre de usuario");
-            }else if(leerContraseniaTextField().equals("")){
+            } else if (leerContraseniaTextField().equals("")) {
                 JOptionPane.showMessageDialog(null, "Ingrese la contraseña");
-            }else{
+            } else {
                 administrador = new Administrador(leerNombreTextField(), leerApellidoPaternoTextField(), leerApellidoMaternoTextField(), leerSueldoTextField(), leerUsuarioTextField(), leerIDTextField(), leerContraseniaTextField());
                 int idAdministrador = metodosAdministrador.compararExistenteID((int) leerIDTextField());
-                if(idAdministrador == -1){
+                if (idAdministrador == -1) {
                     metodosAdministrador.agregarDatosAdministrador(administrador);
-                }else{
+                } else {
                     metodosAdministrador.modificarDatosAdministrador((int) idAdministrador, administrador);
                 }
                 guardarContenidoTXT();
                 inicializarTablaAdministradores();
                 limpiarCeldas(panelRegistro);
             }
-        }catch (Exception exception) {
+        } catch (Exception exception) {
             JOptionPane.showMessageDialog(null, "Error al modificar administrador");
         }
     }
-    public void eliminarAdministrador(){
-        try{
+
+    public void eliminarAdministrador() {
+        try {
             int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estas seguro de eliminar al administrador?", "Aviso", 0);
-            if(confirmacion == 0){
+            if (confirmacion == 0) {
                 metodosAdministrador.eliminarDatosAdministrador(administrador);
                 guardarContenidoTXT();
                 inicializarTablaAdministradores();
                 limpiarCeldas(panelRegistro);
             }
-        }catch(Exception exception){
+        } catch (Exception exception) {
             JOptionPane.showMessageDialog(null, "Error al eliminar administrador");
         }
     }
-    
+
     /**
-     * Creates new form 
+     * Creates new form
      */
     public frmAdministrador() {
         initComponents();
         setLocationRelativeTo(null);
         metodosAdministrador = new MetodosAdministrador();
-        try{
+        try {
             verContenidoTXT();
             inicializarTablaAdministradores();
-        }catch(Exception exception){
+        } catch (Exception exception) {
             JOptionPane.showMessageDialog(null, "El archivo de texto no existe");
         }
     }
@@ -278,6 +292,7 @@ public class frmAdministrador extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         usuario = new javax.swing.JTextField();
         contrasenia = new javax.swing.JTextField();
+        btnRegresarAMenu = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -358,7 +373,7 @@ public class frmAdministrador extends javax.swing.JFrame {
         label_nombre.setText("Nombre:");
 
         label_titulo.setFont(new java.awt.Font("Jamrul", 1, 18)); // NOI18N
-        label_titulo.setText("REGISTRO Administrador");
+        label_titulo.setText("Registro Administrador");
 
         usuarioLabel.setText("Usuario:");
 
@@ -446,6 +461,13 @@ public class frmAdministrador extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        btnRegresarAMenu.setText("Regresar");
+        btnRegresarAMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarAMenuActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -454,8 +476,12 @@ public class frmAdministrador extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(btnRegresarAMenu)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(panelRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(boton_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(boton_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -481,7 +507,9 @@ public class frmAdministrador extends javax.swing.JFrame {
                         .addComponent(panelRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnRegresarAMenu)
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         pack();
@@ -505,15 +533,15 @@ public class frmAdministrador extends javax.swing.JFrame {
     private void tabla_consultaAdministradoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabla_consultaAdministradoresMouseClicked
         // TODO add your handling code here:
         int mouseClick = tabla_consultaAdministradores.rowAtPoint(evt.getPoint());
-        
-        int idAdministrador = (int)tabla_consultaAdministradores.getValueAt(mouseClick, 0);
+
+        int idAdministrador = (int) tabla_consultaAdministradores.getValueAt(mouseClick, 0);
         String nombre = "" + tabla_consultaAdministradores.getValueAt(mouseClick, 1);
         String apellidoPaterno = "" + tabla_consultaAdministradores.getValueAt(mouseClick, 2);
         String apellidoMaterno = "" + tabla_consultaAdministradores.getValueAt(mouseClick, 3);
-        double sueldo = (double)tabla_consultaAdministradores.getValueAt(mouseClick, 4);
+        double sueldo = (double) tabla_consultaAdministradores.getValueAt(mouseClick, 4);
         String texto_usuario = "" + tabla_consultaAdministradores.getValueAt(mouseClick, 5);
         String texto_contrasenia = "" + tabla_consultaAdministradores.getValueAt(mouseClick, 6);
-        
+
         texto_ID.setText(String.valueOf(idAdministrador));
         texto_nombre.setText(nombre);
         texto_apellidoP.setText(apellidoPaterno);
@@ -530,6 +558,13 @@ public class frmAdministrador extends javax.swing.JFrame {
     private void texto_IDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texto_IDActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_texto_IDActionPerformed
+
+    private void btnRegresarAMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarAMenuActionPerformed
+        // TODO add your handling code here:
+        frmMenu menu = new frmMenu();
+        menu.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRegresarAMenuActionPerformed
 
     /**
      * @param args the command line arguments
@@ -573,6 +608,7 @@ public class frmAdministrador extends javax.swing.JFrame {
     private javax.swing.JButton boton_eliminar;
     private javax.swing.JButton boton_guardar;
     private javax.swing.JButton boton_modificar;
+    private javax.swing.JButton btnRegresarAMenu;
     private javax.swing.JTextField contrasenia;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

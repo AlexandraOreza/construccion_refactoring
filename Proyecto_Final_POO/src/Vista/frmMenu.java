@@ -42,6 +42,11 @@ public class frmMenu extends javax.swing.JFrame {
         });
 
         btnEditarCatalogo.setText("Administrar catálogo");
+        btnEditarCatalogo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarCatalogoActionPerformed(evt);
+            }
+        });
 
         btnRegistroVenta.setText("Registrar venta");
         btnRegistroVenta.addActionListener(new java.awt.event.ActionListener() {
@@ -103,6 +108,13 @@ public class frmMenu extends javax.swing.JFrame {
         AdministradorPanel.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAgregarAdminActionPerformed
+
+    private void btnEditarCatalogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarCatalogoActionPerformed
+        // TODO add your handling code here:
+        frmCatalogo vistaCatalogo = new frmCatalogo();
+        vistaCatalogo.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnEditarCatalogoActionPerformed
 
     /**
      * @param args the command line arguments
