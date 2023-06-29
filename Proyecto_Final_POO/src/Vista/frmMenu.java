@@ -57,6 +57,11 @@ public class frmMenu extends javax.swing.JFrame {
         });
 
         btnCerrarSesion.setText("Cerrar sesión");
+        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarSesionActionPerformed(evt);
+            }
+        });
 
         lblMenuTitulo.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
         lblMenuTitulo.setText("Menú");
@@ -116,6 +121,12 @@ public class frmMenu extends javax.swing.JFrame {
         vistaCatalogo.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnEditarCatalogoActionPerformed
+
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
+        frmLogin vistaLogin = new frmLogin();
+        vistaLogin.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     /**
      * @param args the command line arguments
