@@ -25,6 +25,7 @@ public class frmCliente extends javax.swing.JFrame {
      */
     public frmCliente() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**

@@ -14,7 +14,8 @@ public class frmMenu extends javax.swing.JFrame {
      * Creates new form frmMenu
      */
     public frmMenu() {
-        initComponents();   
+        initComponents();  
+        this.setLocationRelativeTo(null);
     }
 
     /**

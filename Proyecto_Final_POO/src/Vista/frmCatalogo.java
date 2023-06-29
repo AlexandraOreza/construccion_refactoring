@@ -15,6 +15,7 @@ public class frmCatalogo extends javax.swing.JFrame {
      */
     public frmCatalogo() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
