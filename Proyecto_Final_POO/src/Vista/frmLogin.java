@@ -67,11 +67,6 @@ public class frmLogin extends javax.swing.JFrame {
         });
 
         btnLogin.setText("Entrar sistema");
-        btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnLoginMouseClicked(evt);
-            }
-        });
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLoginActionPerformed(evt);
@@ -157,40 +152,6 @@ public class frmLogin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Verifica los datos nuevamente");
         }
     }//GEN-LAST:event_btnLoginActionPerformed
-
-    private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
-//        String compUsuario, compContra;
-//        compContra = txtContra.getText();
-//        compUsuario = txtUsuario.getText();
-//        boolean matchedPasswords = false;
-//        try {
-//            FileInputStream file = new FileInputStream("Administradores.txt");
-//            ObjectInputStream input = new ObjectInputStream(file);
-//            if (input != null) {
-//                metodosAdministrador = (MetodosAdministrador) input.readObject();
-//                input.close();
-//            }
-//        } catch (Exception exception) {
-//            System.out.println(exception);
-//            JOptionPane.showMessageDialog(null, "Error al leer el archivo");
-//        }
-//        for (int i = 0; i < metodosAdministrador.cantidadAdministradorRegistrados(); i++) {
-//            administrador = metodosAdministrador.obtenerDatosAdministrador(i);
-//            if (compContra.matches(administrador.getContrasenia()) && compUsuario.matches(administrador.getUsuario())) {
-//                matchedPasswords = true;
-//            }
-//        }
-//
-//        if (matchedPasswords == true) {
-//            frmMenu menuVista = new frmMenu();
-//            menuVista.setVisible(true);
-//            matchedPasswords = false;
-//            this.dispose();
-//        } else {
-//            JOptionPane.showMessageDialog(null, "Verifica los datos nuevamente");
-//        }
-
-    }//GEN-LAST:event_btnLoginMouseClicked
 
     /**
      * @param args the command line arguments
