@@ -6,16 +6,11 @@
 package Modelo;
 
 
-/**
- *
- * @author mario
- */
-public class Administrador{
+
+public class Administrador extends Persona{
     
     // Atributos
-    private String nombre;
-    private String apellidoPaterno;
-    private String apellidoMaterno;
+    
     private double sueldo;
     private String usuario;
     private int idAdministrador;
@@ -23,39 +18,15 @@ public class Administrador{
 
     // Constructor
     public Administrador(String nombre, String apellidoPaterno, String apellidoMaterno, double sueldo, String usuario, int idAdministrador, String contrasenia) {
-        this.nombre = nombre;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
+        
+        super(nombre, apellidoPaterno, apellidoMaterno);
         this.sueldo = sueldo;
         this.usuario = usuario;
         this.idAdministrador = idAdministrador;
         this.contrasenia = contrasenia;
     }
     
-     public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellidoPaterno() {
-        return apellidoPaterno;
-    }
-
-    public void setApellidoPaterno(String apellidoPaterno) {
-        this.apellidoPaterno = apellidoPaterno;
-    }
-
-    public String getApellidoMaterno() {
-        return apellidoMaterno;
-    }
-
-    public void setApellidoMaterno(String apellidoMaterno) {
-        this.apellidoMaterno = apellidoMaterno;
-    }
-
+     
     public String getContrasenia() {
         return contrasenia;
     }
@@ -81,5 +52,14 @@ public class Administrador{
     }
     public void setIdAdministrador(int idAdministrador) {
         this.idAdministrador = idAdministrador;
+    }
+    
+     @Override
+    public String toString() {
+        return "[ ID: " + getIdAdministrador() + "]"
+                // Llamamos al metodo toString de la super clase
+                + super.toString()
+                + "\n" + "Sueldo: $" + getSueldo()
+                + "\n" + "Usuario: " + getUsuario();
     }
 }

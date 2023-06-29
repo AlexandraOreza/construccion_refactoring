@@ -1,10 +1,12 @@
 
 package Modelo;
 
+import java.io.Serializable;
 
 
 
-public abstract class Persona {
+
+public abstract class Persona implements Serializable {
     // Atributos
     public String nombre;
     public String apellidoPaterno;
