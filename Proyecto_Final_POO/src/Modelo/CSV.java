@@ -20,18 +20,18 @@ import java.io.IOException;
  */
 public class CSV {
 
-    private static final String path = "src\\backupFilesTienda\\";
+    private static final String ruta = "src\\backupFilesTienda\\";
 
-    public List<String> readFile(String fileName) {
+    public List<String> leerArchivo(String nombreArchivoLectura) {
         List lineas = new ArrayList<>();
         try {
-            BufferedReader csvReader = new BufferedReader(new FileReader(path+fileName));
+            BufferedReader csvLector = new BufferedReader(new FileReader(ruta+nombreArchivoLectura));
             String linea;
-            while ((linea = csvReader.readLine()) != null) {
+            while ((linea = csvLector.readLine()) != null) {
                 lineas.add(linea);
             }
 
-            csvReader.close();
+            csvLector.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,71 +39,69 @@ public class CSV {
         return lineas;
     }
 
-    public void addRow(String fileName, Object newRowData) {
-        File empleadosFile = new File(path+fileName);
+    public void agregarFilaDatos(String nombreArchivo, Object datosNuevaFila) {
+        File archivoDatos = new File(ruta+nombreArchivo);
         try {
-            FileWriter writer = new FileWriter(path+fileName, true);
-            if (!empleadosFile.exists()) {
-                writer.write("\r\n");
+            FileWriter escritor = new FileWriter(ruta+nombreArchivo, true);
+            if (!archivoDatos.exists()) {
+                escritor.write("\r\n");
             }
-            writer.append(convertObjectToCsvRow(newRowData));
-            writer.close();
-            System.out.println("File created succesfully.");
+            escritor.append(convertirObjetoAFilaCsv(datosNuevaFila));
+            escritor.close();
         } catch (Exception e) {
-            System.out.println("An error occurred.");
+            System.out.println("Ocurrio un error.");
             e.printStackTrace();
         }
     }
 
-    public void modifyRow(String fileName, int idRow, Object modifiedData) {
-        List<String> data = readFile(path+fileName);
-        if (data != null && idRow >= 0 && idRow < data.size()) {
-            data.set(idRow, convertObjectToCsvRow(modifiedData));
+    public void modificarFilaDatos(String fileName, int idFila, Object datosModificados) {
+        List<String> data = leerArchivo(ruta+fileName);
+        if (data != null && idFila >= 0 && idFila < data.size()) {
+            data.set(idFila, convertirObjetoAFilaCsv(datosModificados));
             try {
-                FileWriter csvWriter = new FileWriter(path+fileName, false);
+                FileWriter csvEscritor = new FileWriter(ruta+fileName, false);
 
                 for (int i = 0; i < data.size(); i++) {
-                    csvWriter.write(data.get(i));
+                    csvEscritor.write(data.get(i));
                     if(i< data.size()-1){
-                        csvWriter.write(System.lineSeparator());
+                        csvEscritor.write(System.lineSeparator());
                     }
                 }
 
-                csvWriter.close();
-                System.out.println("Row modified successfully.");
+                csvEscritor.close();
+                System.out.println("Datos de fila modificados exitosamente.");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("Invalid file or row index.");
+            System.out.println("Fila invalida o indice invalido.");
         }
     }
 
-    public void deleteRow(String fileName,int idRow) {
-        List<String> data = readFile(path+fileName);
+    public void eliminarFilaDatos(String nombreArchivo,int idFila) {
+        List<String> data = leerArchivo(ruta+nombreArchivo);
 
-        if (data != null && idRow > 0 && idRow <= data.size()) {
-            data.remove(idRow - 1);
+        if (data != null && idFila > 0 && idFila <= data.size()) {
+            data.remove(idFila - 1);
 
             try {
-                FileWriter csvWriter = new FileWriter(path+fileName, false);
+                FileWriter csvEscritor = new FileWriter(ruta+nombreArchivo, false);
 
                 for (String line : data) {
-                    csvWriter.write(line);
-                    csvWriter.write(System.lineSeparator());
+                    csvEscritor.write(line);
+                    csvEscritor.write(System.lineSeparator());
                 }
 
-                csvWriter.close();
-                System.out.println("Row deleted successfully.");
+                csvEscritor.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("Invalid file or row ID.");
+            System.out.println("Fila invalida o id inválido.");
         }
     }
 
-    private String convertObjectToCsvRow(Object dataObject) {
+    private String convertirObjetoAFilaCsv(Object dataObject) {
         if (dataObject instanceof Administrador) {
             Administrador admin = (Administrador) dataObject;
             return admin.getIdAdministrador() + ","
