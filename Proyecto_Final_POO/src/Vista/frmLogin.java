@@ -6,9 +6,6 @@ package Vista;
 
 import Modelo.Administrador;
 import Modelo.CSV;
-import Modelo.MetodosAdministrador;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 import javax.swing.JOptionPane;
 import java.util.List;
 
@@ -21,9 +18,6 @@ public class frmLogin extends javax.swing.JFrame {
     /**
      * Creates new form frmLogin
      */
-    Administrador administrador;
-    MetodosAdministrador metodosAdministrador;
-
     public frmLogin() {
         initComponents();
         this.setLocationRelativeTo(null);

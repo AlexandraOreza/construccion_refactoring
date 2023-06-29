@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import java.util.List;
 import Modelo.CSV;
 
 /**
@@ -28,35 +29,48 @@ public class frmAdministrador extends javax.swing.JFrame {
     private String rutaArchivo = "Administradores.txt";
     Administrador administrador;
     MetodosAdministrador metodosAdministrador;
+    
+    CSV csv = new CSV();
+    String fileName = "Administradores.csv";
 
     public void inicializarTablaAdministradores() {
-        DefaultTableModel titulos = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int filas, int columnas) {
-                return false;
-            }
-        };
-        titulos.addColumn("ID Administrador");
-        titulos.addColumn("Nombre");
-        titulos.addColumn("Apellido Materno");
-        titulos.addColumn("Apellido Paterno");
-        titulos.addColumn("Sueldo");
-        titulos.addColumn("Usuario");
-        titulos.addColumn("Contraseña");
-        Object fila[] = new Object[titulos.getColumnCount()];
-        for (int i = 0; i < metodosAdministrador.cantidadAdministradorRegistrados(); i++) {
-            administrador = metodosAdministrador.obtenerDatosAdministrador(i);
-            fila[0] = administrador.getIdAdministrador();
-            fila[1] = administrador.getNombre();
-            fila[2] = administrador.getApellidoPaterno();
-            fila[3] = administrador.getApellidoMaterno();
-            fila[4] = administrador.getSueldo();
-            fila[5] = administrador.getUsuario();
-            fila[6] = administrador.getContrasenia();
-            titulos.addRow(fila);
+            DefaultTableModel titulos = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int filas, int columnas) {
+            return false;
         }
-        tabla_consultaAdministradores.setModel(titulos);
-        tabla_consultaAdministradores.setRowHeight(60);
+    };
+
+    titulos.addColumn("ID Administrador");
+    titulos.addColumn("Nombre");
+    titulos.addColumn("Apellido Materno");
+    titulos.addColumn("Apellido Paterno");
+    titulos.addColumn("Usuario");
+    titulos.addColumn("Contraseña");
+    titulos.addColumn("Sueldo");
+
+    List<String> data = csv.leerArchivo("Administradores.csv");
+    if (data != null) {
+        for (String line : data) {
+            String[] row = line.split(",");
+            if (row.length >= 7) {
+                Object[] fila = new Object[7];
+                fila[0] = row[0];
+                fila[1] = row[1];
+                fila[2] = row[2];
+                fila[3] = row[3];
+                fila[4] = row[4];
+                fila[5] = row[5];
+                fila[6] = row[6];
+                titulos.addRow(fila);
+            }
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "Error al leer el archivo");
+    }
+
+    tabla_consultaAdministradores.setModel(titulos);
+    tabla_consultaAdministradores.setRowHeight(60);
     }
 
     // Metodos para leer los campos ingresados por registrar
@@ -162,8 +176,6 @@ public class frmAdministrador extends javax.swing.JFrame {
             }
         }
     }
-    CSV csv = new CSV();
-    String fileName = "Administradores.csv";
     public void guardarAdministrador() {
         try {
             // que es -666
@@ -536,13 +548,13 @@ public class frmAdministrador extends javax.swing.JFrame {
         // TODO add your handling code here:
         int mouseClick = tabla_consultaAdministradores.rowAtPoint(evt.getPoint());
 
-        int idAdministrador = (int) tabla_consultaAdministradores.getValueAt(mouseClick, 0);
+        int idAdministrador = Integer.parseInt((String) tabla_consultaAdministradores.getValueAt(mouseClick, 0));
         String nombre = "" + tabla_consultaAdministradores.getValueAt(mouseClick, 1);
         String apellidoPaterno = "" + tabla_consultaAdministradores.getValueAt(mouseClick, 2);
         String apellidoMaterno = "" + tabla_consultaAdministradores.getValueAt(mouseClick, 3);
-        double sueldo = (double) tabla_consultaAdministradores.getValueAt(mouseClick, 4);
-        String texto_usuario = "" + tabla_consultaAdministradores.getValueAt(mouseClick, 5);
-        String texto_contrasenia = "" + tabla_consultaAdministradores.getValueAt(mouseClick, 6);
+        String texto_usuario = "" + tabla_consultaAdministradores.getValueAt(mouseClick, 4);
+        String texto_contrasenia = "" + tabla_consultaAdministradores.getValueAt(mouseClick, 5);
+        double sueldo = Double.parseDouble((String) tabla_consultaAdministradores.getValueAt(mouseClick, 6));
 
         texto_ID.setText(String.valueOf(idAdministrador));
         texto_nombre.setText(nombre);

@@ -5,9 +5,7 @@
 package Modelo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -55,7 +53,7 @@ public class CSV {
     }
 
     public void modificarFilaDatos(String fileName, int idFila, Object datosModificados) {
-        List<String> data = leerArchivo(ruta+fileName);
+        List<String> data = leerArchivo(fileName);
         if (data != null && idFila >= 0 && idFila < data.size()) {
             data.set(idFila, convertirObjetoAFilaCsv(datosModificados));
             try {
@@ -79,7 +77,7 @@ public class CSV {
     }
 
     public void eliminarFilaDatos(String nombreArchivo,int idFila) {
-        List<String> data = leerArchivo(ruta+nombreArchivo);
+        List<String> data = leerArchivo(nombreArchivo);
 
         if (data != null && idFila > 0 && idFila <= data.size()) {
             data.remove(idFila - 1);
