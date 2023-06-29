@@ -22,10 +22,10 @@ public class CSV {
 
     private static final String path = "src\\backupFilesTienda\\";
 
-    private List<String> readFile(String fileName) {
+    public List<String> readFile(String fileName) {
         List lineas = new ArrayList<>();
         try {
-            BufferedReader csvReader = new BufferedReader(new FileReader(fileName));
+            BufferedReader csvReader = new BufferedReader(new FileReader(path+fileName));
             String linea;
             while ((linea = csvReader.readLine()) != null) {
                 lineas.add(linea);

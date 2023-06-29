@@ -5,10 +5,12 @@
 package Vista;
 
 import Modelo.Administrador;
+import Modelo.CSV;
 import Modelo.MetodosAdministrador;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import javax.swing.JOptionPane;
+import java.util.List;
 
 /**
  *
@@ -21,7 +23,7 @@ public class frmLogin extends javax.swing.JFrame {
      */
     Administrador administrador;
     MetodosAdministrador metodosAdministrador;
-            
+
     public frmLogin() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -41,7 +43,7 @@ public class frmLogin extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtContra = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnLogin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,15 +66,15 @@ public class frmLogin extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Entrar sistema");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnLogin.setText("Entrar sistema");
+        btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                btnLoginMouseClicked(evt);
             }
         });
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnLoginActionPerformed(evt);
             }
         });
 
@@ -91,7 +93,7 @@ public class frmLogin extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
+                    .addComponent(btnLogin)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(txtUsuario)
                         .addComponent(txtContra, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)))
@@ -111,7 +113,7 @@ public class frmLogin extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(38, 38, 38)
-                .addComponent(jButton1)
+                .addComponent(btnLogin)
                 .addContainerGap(72, Short.MAX_VALUE))
         );
 
@@ -119,50 +121,76 @@ public class frmLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
-      
+
     }//GEN-LAST:event_txtUsuarioActionPerformed
 
     private void txtContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraActionPerformed
-        
+
     }//GEN-LAST:event_txtContraActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+    CSV csv = new CSV();
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         String compUsuario, compContra;
         compContra = txtContra.getText();
         compUsuario = txtUsuario.getText();
         boolean matchedPasswords = false;
-        try{
-            FileInputStream file = new FileInputStream("Administradores.txt");
-            ObjectInputStream input = new ObjectInputStream(file);
-            if(input != null){
-                metodosAdministrador = (MetodosAdministrador)input.readObject();
-                input.close();
+
+        // Read the CSV file
+        List<String> data = csv.readFile("Administradores.csv");
+        if (data != null) {
+            for (String line : data) {
+                String[] row = line.split(",");
+                if (row.length >= 6 && compContra.equals(row[5]) && compUsuario.equals(row[4])) {
+                    matchedPasswords = true;
+                    break;
+                }
             }
-        }catch(Exception exception){
-            System.out.println(exception);
+        } else {
             JOptionPane.showMessageDialog(null, "Error al leer el archivo");
         }
-        for (int i = 0; i < metodosAdministrador.cantidadAdministradorRegistrados(); i++) {
-            administrador = metodosAdministrador.obtenerDatosAdministrador(i);
-            if(compContra.matches(administrador.getContrasenia()) && compUsuario.matches(administrador.getUsuario())) {
-                matchedPasswords = true;
-            }
-        }
-        
-        if (matchedPasswords == true){
+
+        if (matchedPasswords) {
             frmMenu menuVista = new frmMenu();
             menuVista.setVisible(true);
-            matchedPasswords = false;
-            this.dispose();        
+            this.dispose();
         } else {
             JOptionPane.showMessageDialog(null, "Verifica los datos nuevamente");
         }
-        
-    }//GEN-LAST:event_jButton1MouseClicked
+    }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
+//        String compUsuario, compContra;
+//        compContra = txtContra.getText();
+//        compUsuario = txtUsuario.getText();
+//        boolean matchedPasswords = false;
+//        try {
+//            FileInputStream file = new FileInputStream("Administradores.txt");
+//            ObjectInputStream input = new ObjectInputStream(file);
+//            if (input != null) {
+//                metodosAdministrador = (MetodosAdministrador) input.readObject();
+//                input.close();
+//            }
+//        } catch (Exception exception) {
+//            System.out.println(exception);
+//            JOptionPane.showMessageDialog(null, "Error al leer el archivo");
+//        }
+//        for (int i = 0; i < metodosAdministrador.cantidadAdministradorRegistrados(); i++) {
+//            administrador = metodosAdministrador.obtenerDatosAdministrador(i);
+//            if (compContra.matches(administrador.getContrasenia()) && compUsuario.matches(administrador.getUsuario())) {
+//                matchedPasswords = true;
+//            }
+//        }
+//
+//        if (matchedPasswords == true) {
+//            frmMenu menuVista = new frmMenu();
+//            menuVista.setVisible(true);
+//            matchedPasswords = false;
+//            this.dispose();
+//        } else {
+//            JOptionPane.showMessageDialog(null, "Verifica los datos nuevamente");
+//        }
+
+    }//GEN-LAST:event_btnLoginMouseClicked
 
     /**
      * @param args the command line arguments
@@ -200,7 +228,7 @@ public class frmLogin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnLogin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
