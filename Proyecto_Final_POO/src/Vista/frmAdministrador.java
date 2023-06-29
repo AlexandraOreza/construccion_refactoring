@@ -7,10 +7,6 @@ package Vista;
 
 import Modelo.Administrador;
 import Modelo.MetodosAdministrador;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -25,13 +21,12 @@ import Modelo.CSV;
  */
 public class frmAdministrador extends javax.swing.JFrame {
 
-    // Variables de instancia
-    private String rutaArchivo = "Administradores.txt";
+// Variables de instancia
     Administrador administrador;
     MetodosAdministrador metodosAdministrador;
     
-    CSV csv = new CSV();
-    String fileName = "Administradores.csv";
+    private CSV csv = new CSV();
+    private final String fileName = "Administradores.csv";
 
     public void inicializarTablaAdministradores() {
             DefaultTableModel titulos = new DefaultTableModel() {
@@ -49,7 +44,7 @@ public class frmAdministrador extends javax.swing.JFrame {
     titulos.addColumn("Contraseña");
     titulos.addColumn("Sueldo");
 
-    List<String> data = csv.leerArchivo("Administradores.csv");
+    List<String> data = csv.leerArchivo(fileName);
     if (data != null) {
         for (String line : data) {
             String[] row = line.split(",");
@@ -137,36 +132,7 @@ public class frmAdministrador extends javax.swing.JFrame {
         }
     }
 
-    // Metodos para poder leer y guardar el contenido del archivo de texto
-    public void verContenidoTXT() {
-        try {
-            FileInputStream file = new FileInputStream(rutaArchivo);
-            ObjectInputStream input = new ObjectInputStream(file);
-            if (input != null) {
-                metodosAdministrador = (MetodosAdministrador) input.readObject();
-                input.close();
-            }
-        } catch (Exception exception) {
-            System.out.println(exception);
-            JOptionPane.showMessageDialog(null, "Error al leer el archivo");
-        }
-    }
-
-    public void guardarContenidoTXT() {
-        try {
-            FileOutputStream file = new FileOutputStream(rutaArchivo);
-            ObjectOutputStream output = new ObjectOutputStream(file);
-            if (output != null) {
-                output.writeObject(metodosAdministrador);
-                output.close();
-            }
-        } catch (Exception exception) {
-            System.out.println(exception.getStackTrace());
-            JOptionPane.showMessageDialog(null, "Error al guardar el archivo");
-        }
-    }
-
-    // Metodo para quitar el contenido de las celdas al guardar
+        // Metodo para quitar el contenido de las celdas al guardar
     public void limpiarCeldas(JPanel jPanel) {
         for (int i = 0; jPanel.getComponents().length > i; i++) {
             if (jPanel.getComponents()[i] instanceof JTextField) {
@@ -196,12 +162,10 @@ public class frmAdministrador extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Ingrese la contraseña");
             } else {
                 administrador = new Administrador(leerNombreTextField(), leerApellidoPaternoTextField(), leerApellidoMaternoTextField(), leerSueldoTextField(), leerUsuarioTextField(), leerIDTextField(), leerContraseniaTextField());
-                if ((metodosAdministrador.compararExistenteID((int) administrador.getIdAdministrador())) != (-1)) {
+                if (metodosAdministrador.existeId(administrador.getIdAdministrador())) {
                     JOptionPane.showMessageDialog(null, "Este ID ya ha sido asginado");
                 } else {
                     metodosAdministrador.agregarDatosAdministrador(administrador);
-                    csv.agregarFilaDatos(fileName, administrador);
-                    guardarContenidoTXT();
                     inicializarTablaAdministradores();
                     limpiarCeldas(panelRegistro);
                 }
@@ -230,14 +194,11 @@ public class frmAdministrador extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Ingrese la contraseña");
             } else {
                 administrador = new Administrador(leerNombreTextField(), leerApellidoPaternoTextField(), leerApellidoMaternoTextField(), leerSueldoTextField(), leerUsuarioTextField(), leerIDTextField(), leerContraseniaTextField());
-                int idAdministrador = metodosAdministrador.compararExistenteID((int) leerIDTextField());
-                if (idAdministrador == -1) {
+                if (!metodosAdministrador.existeId(administrador.getIdAdministrador())) {
                     metodosAdministrador.agregarDatosAdministrador(administrador);
                 } else {
-                    metodosAdministrador.modificarDatosAdministrador((int) idAdministrador, administrador);
-                    csv.modificarFilaDatos(fileName,idAdministrador, administrador);
+                    metodosAdministrador.modificarDatosAdministrador((int) leerIDTextField(), administrador);
                 }
-                guardarContenidoTXT();
                 inicializarTablaAdministradores();
                 limpiarCeldas(panelRegistro);
             }
@@ -250,14 +211,12 @@ public class frmAdministrador extends javax.swing.JFrame {
         try {
             int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estas seguro de eliminar al administrador?", "Aviso", 0);
             if (confirmacion == 0) {
-                metodosAdministrador.eliminarDatosAdministrador(administrador);
-                csv.eliminarFilaDatos(fileName, administrador.getIdAdministrador());
-                guardarContenidoTXT();
+                metodosAdministrador.eliminarDatosAdministrador(Integer.parseInt(texto_ID.getText()));
                 inicializarTablaAdministradores();
                 limpiarCeldas(panelRegistro);
             }
         } catch (Exception exception) {
-            JOptionPane.showMessageDialog(null, "Error al eliminar administrador");
+            JOptionPane.showMessageDialog(null, exception);
         }
     }
 
@@ -269,7 +228,6 @@ public class frmAdministrador extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         metodosAdministrador = new MetodosAdministrador();
         try {
-            verContenidoTXT();
             inicializarTablaAdministradores();
         } catch (Exception exception) {
             JOptionPane.showMessageDialog(null, "El archivo de texto no existe");

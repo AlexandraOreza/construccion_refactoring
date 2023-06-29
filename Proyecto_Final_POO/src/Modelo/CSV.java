@@ -79,9 +79,11 @@ public class CSV {
     public void eliminarFilaDatos(String nombreArchivo,int idFila) {
         List<String> data = leerArchivo(nombreArchivo);
 
+        for(String row: data){
+            System.out.println(row);
+        }
         if (data != null && idFila > 0 && idFila <= data.size()) {
             data.remove(idFila - 1);
-
             try {
                 FileWriter csvEscritor = new FileWriter(ruta+nombreArchivo, false);
 
@@ -112,5 +114,18 @@ public class CSV {
         } else {
             return null;
         }
+    }
+    
+    public boolean existeId(String fileName, int id) {
+        List<String> data = leerArchivo(fileName);
+        if (data != null) {
+            for (String linea : data) {
+                String[] valores = linea.split(",");
+                if (valores.length > 0 && Integer.parseInt(valores[0]) == id) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -5,14 +5,12 @@
  */
 package Modelo;
 
-import java.io.Serializable;
-
 
 /**
  *
  * @author mario
  */
-public class Administrador implements Serializable{
+public class Administrador{
     
     // Atributos
     private String nombre;
