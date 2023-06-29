@@ -128,15 +128,15 @@ public class frmLogin extends javax.swing.JFrame {
         String compUsuario, compContra;
         compContra = txtContra.getText();
         compUsuario = txtUsuario.getText();
-        boolean matchedPasswords = false;
+        boolean contrasenaIgual = false;
 
         // Read the CSV file
-        List<String> data = csv.readFile("Administradores.csv");
+        List<String> data = csv.leerArchivo("Administradores.csv");
         if (data != null) {
-            for (String line : data) {
-                String[] row = line.split(",");
-                if (row.length >= 6 && compContra.equals(row[5]) && compUsuario.equals(row[4])) {
-                    matchedPasswords = true;
+            for (String linea : data) {
+                String[] fila = linea.split(",");
+                if (fila.length >= 6 && compContra.equals(fila[5]) && compUsuario.equals(fila[4])) {
+                    contrasenaIgual = true;
                     break;
                 }
             }
@@ -144,7 +144,7 @@ public class frmLogin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error al leer el archivo");
         }
 
-        if (matchedPasswords) {
+        if (contrasenaIgual) {
             frmMenu menuVista = new frmMenu();
             menuVista.setVisible(true);
             this.dispose();

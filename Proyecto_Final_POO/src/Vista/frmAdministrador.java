@@ -188,7 +188,7 @@ public class frmAdministrador extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Este ID ya ha sido asginado");
                 } else {
                     metodosAdministrador.agregarDatosAdministrador(administrador);
-                    csv.addRow(fileName, administrador);
+                    csv.agregarFilaDatos(fileName, administrador);
                     guardarContenidoTXT();
                     inicializarTablaAdministradores();
                     limpiarCeldas(panelRegistro);
@@ -223,7 +223,7 @@ public class frmAdministrador extends javax.swing.JFrame {
                     metodosAdministrador.agregarDatosAdministrador(administrador);
                 } else {
                     metodosAdministrador.modificarDatosAdministrador((int) idAdministrador, administrador);
-                    csv.modifyRow(fileName,idAdministrador, administrador);
+                    csv.modificarFilaDatos(fileName,idAdministrador, administrador);
                 }
                 guardarContenidoTXT();
                 inicializarTablaAdministradores();
@@ -239,7 +239,7 @@ public class frmAdministrador extends javax.swing.JFrame {
             int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estas seguro de eliminar al administrador?", "Aviso", 0);
             if (confirmacion == 0) {
                 metodosAdministrador.eliminarDatosAdministrador(administrador);
-                csv.deleteRow(fileName, administrador.getIdAdministrador());
+                csv.eliminarFilaDatos(fileName, administrador.getIdAdministrador());
                 guardarContenidoTXT();
                 inicializarTablaAdministradores();
                 limpiarCeldas(panelRegistro);
