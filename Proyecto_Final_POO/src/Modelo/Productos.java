@@ -10,20 +10,18 @@ public class Productos{
     private int claveP;
     private String descripcion;
     private double precio;
-    private double importe;
-
-    public double getImporte() {
-        return importe;
-    }
-
-    public void setImporte(double importe) {
-        this.importe = importe;
-    }
-    
 
     // Constructor del producto
     
-
+    public Productos(String nombreProducto, int cantidad, int claveP, String descripcion, double precio){
+        this.nombreProducto = nombreProducto;
+        this.cantidad = cantidad;
+        this.claveP = claveP;
+        this.descripcion = descripcion;
+        this.precio = precio;   
+        
+    }
+    
     // Metodos get
     public String getNombreProducto() {
         return nombreProducto;
