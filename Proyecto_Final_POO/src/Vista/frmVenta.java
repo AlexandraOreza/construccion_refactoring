@@ -30,6 +30,7 @@ public class frmVenta extends javax.swing.JFrame {
     
     public frmVenta() {
         initComponents();
+        this.setLocationRelativeTo(null);
         DefaultComboBoxModel comboModel = new DefaultComboBoxModel (electronicos);
         cboProd.setModel(comboModel);
         modelo.addColumn("DESCRIPCION");
