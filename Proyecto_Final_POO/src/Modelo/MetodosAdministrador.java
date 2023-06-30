@@ -19,7 +19,7 @@ public class MetodosAdministrador {
     }
 
     public void modificarDatosAdministrador(int idAdministrador, Administrador administrador) {
-        csv.modificarFilaDatos(nombreArchivo, idAdministrador, datosAdministrador);
+        csv.modificarFilaDatos(nombreArchivo, idAdministrador, administrador);
     }
 
     public void eliminarDatosAdministrador(int idAdministrador) {

@@ -21,51 +21,48 @@ import Modelo.CSV;
  */
 public class frmAdministrador extends javax.swing.JFrame {
 
-// Variables de instancia
-    Administrador administrador;
-    MetodosAdministrador metodosAdministrador;
-    
+// Variables de instancia    
     private CSV csv = new CSV();
     private final String fileName = "Administradores.csv";
 
     public void inicializarTablaAdministradores() {
-            DefaultTableModel titulos = new DefaultTableModel() {
-        @Override
-        public boolean isCellEditable(int filas, int columnas) {
-            return false;
-        }
-    };
-
-    titulos.addColumn("ID Administrador");
-    titulos.addColumn("Nombre");
-    titulos.addColumn("Apellido Materno");
-    titulos.addColumn("Apellido Paterno");
-    titulos.addColumn("Usuario");
-    titulos.addColumn("Contraseña");
-    titulos.addColumn("Sueldo");
-
-    List<String> data = csv.leerArchivo(fileName);
-    if (data != null) {
-        for (String line : data) {
-            String[] row = line.split(",");
-            if (row.length >= 7) {
-                Object[] fila = new Object[7];
-                fila[0] = row[0];
-                fila[1] = row[1];
-                fila[2] = row[2];
-                fila[3] = row[3];
-                fila[4] = row[4];
-                fila[5] = row[5];
-                fila[6] = row[6];
-                titulos.addRow(fila);
+        DefaultTableModel titulos = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int filas, int columnas) {
+                return false;
             }
-        }
-    } else {
-        JOptionPane.showMessageDialog(null, "Error al leer el archivo");
-    }
+        };
 
-    tabla_consultaAdministradores.setModel(titulos);
-    tabla_consultaAdministradores.setRowHeight(60);
+        titulos.addColumn("ID Administrador");
+        titulos.addColumn("Nombre");
+        titulos.addColumn("Apellido Materno");
+        titulos.addColumn("Apellido Paterno");
+        titulos.addColumn("Usuario");
+        titulos.addColumn("Contraseña");
+        titulos.addColumn("Sueldo");
+
+        List<String> data = csv.obtenerDatosArchivo(fileName);
+        if (data != null) {
+            for (String line : data) {
+                String[] row = line.split(",");
+                if (row.length >= 7) {
+                    Object[] fila = new Object[7];
+                    fila[0] = row[0];
+                    fila[1] = row[1];
+                    fila[2] = row[2];
+                    fila[3] = row[3];
+                    fila[4] = row[4];
+                    fila[5] = row[5];
+                    fila[6] = row[6];
+                    titulos.addRow(fila);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo");
+        }
+
+        tabla_consultaAdministradores.setModel(titulos);
+        tabla_consultaAdministradores.setRowHeight(60);
     }
 
     // Metodos para leer los campos ingresados por registrar
@@ -132,7 +129,7 @@ public class frmAdministrador extends javax.swing.JFrame {
         }
     }
 
-        // Metodo para quitar el contenido de las celdas al guardar
+    // Metodo para quitar el contenido de las celdas al guardar
     public void limpiarCeldas(JPanel jPanel) {
         for (int i = 0; jPanel.getComponents().length > i; i++) {
             if (jPanel.getComponents()[i] instanceof JTextField) {
@@ -142,6 +139,10 @@ public class frmAdministrador extends javax.swing.JFrame {
             }
         }
     }
+
+    Administrador administrador;
+    MetodosAdministrador metodosAdministrador;
+
     public void guardarAdministrador() {
         try {
             // que es -666
@@ -162,6 +163,7 @@ public class frmAdministrador extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Ingrese la contraseña");
             } else {
                 administrador = new Administrador(leerNombreTextField(), leerApellidoPaternoTextField(), leerApellidoMaternoTextField(), leerSueldoTextField(), leerUsuarioTextField(), leerIDTextField(), leerContraseniaTextField());
+                
                 if (metodosAdministrador.existeId(administrador.getIdAdministrador())) {
                     JOptionPane.showMessageDialog(null, "Este ID ya ha sido asginado");
                 } else {
@@ -194,16 +196,15 @@ public class frmAdministrador extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Ingrese la contraseña");
             } else {
                 administrador = new Administrador(leerNombreTextField(), leerApellidoPaternoTextField(), leerApellidoMaternoTextField(), leerSueldoTextField(), leerUsuarioTextField(), leerIDTextField(), leerContraseniaTextField());
-                if (!metodosAdministrador.existeId(administrador.getIdAdministrador())) {
-                    metodosAdministrador.agregarDatosAdministrador(administrador);
-                } else {
+                if (metodosAdministrador.existeId(administrador.getIdAdministrador())) {
                     metodosAdministrador.modificarDatosAdministrador((int) leerIDTextField(), administrador);
+
+                    inicializarTablaAdministradores();
+                    limpiarCeldas(panelRegistro);
                 }
-                inicializarTablaAdministradores();
-                limpiarCeldas(panelRegistro);
             }
         } catch (Exception exception) {
-            JOptionPane.showMessageDialog(null, "Error al modificar administrador");
+            JOptionPane.showMessageDialog(null, "No se pudo modificar");
         }
     }
 
@@ -261,7 +262,7 @@ public class frmAdministrador extends javax.swing.JFrame {
         label_nombre = new javax.swing.JLabel();
         label_titulo = new javax.swing.JLabel();
         usuarioLabel = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        contrasenaLabel = new javax.swing.JLabel();
         usuario = new javax.swing.JTextField();
         contrasenia = new javax.swing.JTextField();
         btnRegresarAMenu = new javax.swing.JButton();
@@ -324,11 +325,6 @@ public class frmAdministrador extends javax.swing.JFrame {
 
         texto_ID.setBackground(new java.awt.Color(224, 255, 255));
         texto_ID.setForeground(new java.awt.Color(1, 1, 1));
-        texto_ID.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                texto_IDActionPerformed(evt);
-            }
-        });
 
         texto_nombre.setBackground(new java.awt.Color(224, 255, 255));
         texto_nombre.setForeground(new java.awt.Color(1, 1, 1));
@@ -349,13 +345,7 @@ public class frmAdministrador extends javax.swing.JFrame {
 
         usuarioLabel.setText("Usuario:");
 
-        jLabel2.setText("Contraseña:");
-
-        usuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                usuarioActionPerformed(evt);
-            }
-        });
+        contrasenaLabel.setText("Contraseña:");
 
         javax.swing.GroupLayout panelRegistroLayout = new javax.swing.GroupLayout(panelRegistro);
         panelRegistro.setLayout(panelRegistroLayout);
@@ -383,7 +373,7 @@ public class frmAdministrador extends javax.swing.JFrame {
                             .addGap(63, 63, 63)
                             .addGroup(panelRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRegistroLayout.createSequentialGroup()
-                                    .addComponent(jLabel2)
+                                    .addComponent(contrasenaLabel)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(contrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(panelRegistroLayout.createSequentialGroup()
@@ -416,7 +406,7 @@ public class frmAdministrador extends javax.swing.JFrame {
                 .addGroup(panelRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(label_nombre)
                     .addComponent(texto_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
+                    .addComponent(contrasenaLabel)
                     .addComponent(contrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -523,14 +513,6 @@ public class frmAdministrador extends javax.swing.JFrame {
         contrasenia.setText(String.valueOf(texto_contrasenia));
     }//GEN-LAST:event_tabla_consultaAdministradoresMouseClicked
 
-    private void usuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_usuarioActionPerformed
-
-    private void texto_IDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texto_IDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_texto_IDActionPerformed
-
     private void btnRegresarAMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarAMenuActionPerformed
         // TODO add your handling code here:
         frmMenu menu = new frmMenu();
@@ -581,8 +563,8 @@ public class frmAdministrador extends javax.swing.JFrame {
     private javax.swing.JButton boton_guardar;
     private javax.swing.JButton boton_modificar;
     private javax.swing.JButton btnRegresarAMenu;
+    private javax.swing.JLabel contrasenaLabel;
     private javax.swing.JTextField contrasenia;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel label_ID;
     private javax.swing.JLabel label_apellidoM;
