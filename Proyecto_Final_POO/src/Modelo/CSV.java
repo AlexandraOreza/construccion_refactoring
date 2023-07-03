@@ -18,7 +18,7 @@ import java.io.IOException;
  */
 public class CSV {
 
-    private static final String ruta = "src\\backupFilesTienda\\";
+    private static final String ruta = "src/backupFilesTienda/";
 
     public List<String> leerArchivo(String nombreArchivoLectura) {
         List lineas = new ArrayList<>();
