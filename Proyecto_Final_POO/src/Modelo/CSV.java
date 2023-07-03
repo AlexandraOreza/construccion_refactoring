@@ -84,6 +84,21 @@ public class CSV {
             System.out.println("Fila invalida o indice invalido.");
         }
     }
+    
+    private String convertirObjetoAFilaCsv(Object dataObject) {
+        if (dataObject instanceof Administrador) {
+            Administrador admin = (Administrador) dataObject;
+            return admin.getIdAdministrador() + ","
+                    + admin.getNombre() + ","
+                    + admin.getApellidoPaterno() + ","
+                    + admin.getApellidoMaterno() + ","
+                    + admin.getUsuario() + ","
+                    + admin.getContrasenia() + ","
+                    + admin.getSueldo() + "\r\n";
+        } else {
+            return null;
+        }
+    }
 
     public void eliminarFilaDatos(String nombreArchivo,int idFila) {
         List<String> data = obtenerDatosArchivo(nombreArchivo);
@@ -104,21 +119,6 @@ public class CSV {
             }
         } else {
             System.out.println("Fila invalida o id inválido.");
-        }
-    }
-
-    private String convertirObjetoAFilaCsv(Object dataObject) {
-        if (dataObject instanceof Administrador) {
-            Administrador admin = (Administrador) dataObject;
-            return admin.getIdAdministrador() + ","
-                    + admin.getNombre() + ","
-                    + admin.getApellidoPaterno() + ","
-                    + admin.getApellidoMaterno() + ","
-                    + admin.getUsuario() + ","
-                    + admin.getContrasenia() + ","
-                    + admin.getSueldo() + "\r\n";
-        } else {
-            return null;
         }
     }
     
