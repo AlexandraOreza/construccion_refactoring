@@ -121,7 +121,6 @@ public class CSV {
             System.out.println("Fila invalida o id inválido.");
         }
     }
-    
     public boolean existeId(String fileName, int id) {
         List<String> data = obtenerDatosArchivo(fileName);
         

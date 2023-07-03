@@ -32,7 +32,7 @@ public class frmMenu extends javax.swing.JFrame {
         btnRegistroVenta = new javax.swing.JButton();
         btnCerrarSesion = new javax.swing.JButton();
         lblMenuTitulo = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnAgregarCliente = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,10 +67,10 @@ public class frmMenu extends javax.swing.JFrame {
         lblMenuTitulo.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
         lblMenuTitulo.setText("Menú");
 
-        jButton1.setText("Agregar cliente");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnAgregarCliente.setText("Agregar cliente");
+        btnAgregarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAgregarClienteActionPerformed(evt);
             }
         });
 
@@ -90,7 +90,7 @@ public class frmMenu extends javax.swing.JFrame {
                             .addComponent(lblMenuTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnEditarCatalogo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnRegistroVenta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(btnAgregarCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(126, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -101,7 +101,7 @@ public class frmMenu extends javax.swing.JFrame {
                 .addGap(35, 35, 35)
                 .addComponent(btnAgregarAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16)
-                .addComponent(jButton1)
+                .addComponent(btnAgregarCliente)
                 .addGap(18, 18, 18)
                 .addComponent(btnEditarCatalogo)
                 .addGap(18, 18, 18)
@@ -139,11 +139,11 @@ public class frmMenu extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnAgregarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarClienteActionPerformed
         frmCliente ClienteVenta = new frmCliente();
         ClienteVenta.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnAgregarClienteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -182,10 +182,10 @@ public class frmMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarAdmin;
+    private javax.swing.JButton btnAgregarCliente;
     private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JButton btnEditarCatalogo;
     private javax.swing.JButton btnRegistroVenta;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel lblMenuTitulo;
     // End of variables declaration//GEN-END:variables
 }

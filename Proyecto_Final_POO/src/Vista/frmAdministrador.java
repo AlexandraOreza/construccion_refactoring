@@ -139,7 +139,7 @@ public class frmAdministrador extends javax.swing.JFrame {
             }
         }
     }
-
+    
     Administrador administrador;
     MetodosAdministrador metodosAdministrador;
 
