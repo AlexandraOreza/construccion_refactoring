@@ -24,9 +24,6 @@ import java.io.IOException;
  */
 public class CSV {
 
-    private static final String ruta = "src/backupFilesTienda/";
-
-    public List<String> leerArchivo(String nombreArchivoLectura) {
     private static final String RUTA_CARPETA = "src\\backupFilesTienda\\";
     
     public List<String> obtenerDatosArchivo(String nombreArchivoLectura) {
