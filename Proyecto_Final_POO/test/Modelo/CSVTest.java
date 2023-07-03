@@ -4,71 +4,80 @@
  */
 package Modelo;
 
-import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
+import java.util.List;
 
 /**
  *
- * @author zhuwu1
+ * @author Alexandra
  */
 public class CSVTest {
     
-    public CSVTest() {
+    private static CSV csv;
+    private final String TEST_FILE_NAME = "Administradores.csv";
+    private static Administrador TEST_DATA;
+    
+    @Before
+    public static void setupClass(){
+        csv = new CSV();
+        TEST_DATA = new Administrador("John","Doe","D",100.0,"Jhon",3,"151");
     }
-
+    
     /**
-     * Test of leerArchivo method, of class CSV.
+     * Test del método leerArchivo de la clase CSV.
      */
     @Test
-    public void testLeerArchivo() {
-        System.out.println("leerArchivo");
-        String nombreArchivoLectura = "";
-        CSV instance = new CSV();
-        List<String> expResult = null;
-        List<String> result = null;
-        assertEquals(expResult, result);
-        
+    public void obtenerDatosArchivo() {
+        List<String> datosArchivo = csv.obtenerDatosArchivo(TEST_FILE_NAME);
+        assertNotNull(datosArchivo);
+        assertEquals(2, datosArchivo.size());
     }
 
     /**
-     * Test of agregarFilaDatos method, of class CSV.
+     * Test del método agregarFilaDatos de la clase CSV.
      */
     @Test
     public void testAgregarFilaDatos() {
-        System.out.println("agregarFilaDatos");
-        String nombreArchivo = "";
-        Object datosNuevaFila = null;
-        CSV instance = new CSV();
-        instance.agregarFilaDatos(nombreArchivo, datosNuevaFila);
+        csv.agregarFilaDatos(TEST_FILE_NAME, TEST_DATA);
         
+        List<String> datosArchivo = csv.obtenerDatosArchivo(TEST_FILE_NAME);
+        assertEquals(3, datosArchivo.size());
     }
-
+    
     /**
-     * Test of modificarFilaDatos method, of class CSV.
-     */
-    @Test
-    public void testModificarFilaDatos() {
-        System.out.println("modificarFilaDatos");
-        String fileName = "";
-        int idFila = 0;
-        Object datosModificados = null;
-        CSV instance = new CSV();
-        instance.modificarFilaDatos(fileName, idFila, datosModificados);
-        
-    }
-
-    /**
-     * Test of eliminarFilaDatos method, of class CSV.
+     * Test del método eliminarFilaDatos de la clase CSV.
      */
     @Test
     public void testEliminarFilaDatos() {
-        System.out.println("eliminarFilaDatos");
-        String nombreArchivo = "";
-        int idFila = 0;
-        CSV instance = new CSV();
-        instance.eliminarFilaDatos(nombreArchivo, idFila);
-       
+        csv.eliminarFilaDatos(TEST_FILE_NAME, 3);
+        
+        List<String> listaDatosModificados = csv.obtenerDatosArchivo(TEST_FILE_NAME);
+
+        assertEquals(2, listaDatosModificados.size());
+        assertEquals("1,Becky2, Zhu, Wu, Becky2,123,1500", listaDatosModificados.get(0));
+        assertEquals("2,Alex,Oreza,Mendicuti,Alex,321,5000", listaDatosModificados.get(1));
+    }
+
+    /**
+     * Test del método existeId de la clase CSV.
+     */
+    @Test
+    public void testExisteId_IdExistente() {
+        boolean existe = csv.existeId("Administradores.csv", 1);
+        assertTrue(existe);
     }
     
+    @Test
+    public void testExisteId_IdNoExiste() {
+        boolean existe = csv.existeId("Administradores.csv", 100);
+        assertFalse(existe);
+    }
+    
+    @Test
+    public void testExisteId_ArchivoInvalido() {
+        boolean existe = csv.existeId("ArchivoInvalido.csv", 1);
+        assertFalse(existe);
+    }
 }

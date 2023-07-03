@@ -4,7 +4,6 @@
  */
 package Vista;
 
-import Modelo.Administrador;
 import Modelo.CSV;
 import javax.swing.JOptionPane;
 import java.util.List;
@@ -32,33 +31,21 @@ public class frmLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        tituloLabel = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        usuarioLabel = new javax.swing.JLabel();
+        contrasenaLabel = new javax.swing.JLabel();
         txtContra = new javax.swing.JTextField();
         btnLogin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
-        jLabel1.setText("LOGIN TRABAJADOR");
+        tituloLabel.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        tituloLabel.setText("LOGIN TRABAJADOR");
 
-        txtUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUsuarioActionPerformed(evt);
-            }
-        });
+        usuarioLabel.setText("Usuario:");
 
-        jLabel2.setText("Usuario:");
-
-        jLabel3.setText("Contraseña: ");
-
-        txtContra.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtContraActionPerformed(evt);
-            }
-        });
+        contrasenaLabel.setText("Contraseña: ");
 
         btnLogin.setText("Entrar sistema");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -73,13 +60,13 @@ public class frmLogin extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(112, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addComponent(tituloLabel)
                 .addGap(105, 105, 105))
             .addGroup(layout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(usuarioLabel)
+                    .addComponent(contrasenaLabel))
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnLogin)
@@ -92,14 +79,14 @@ public class frmLogin extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addComponent(jLabel1)
+                .addComponent(tituloLabel)
                 .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(usuarioLabel))
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3)
+                    .addComponent(contrasenaLabel)
                     .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(38, 38, 38)
                 .addComponent(btnLogin)
@@ -109,14 +96,6 @@ public class frmLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
-
-    }//GEN-LAST:event_txtUsuarioActionPerformed
-
-    private void txtContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraActionPerformed
-
-    }//GEN-LAST:event_txtContraActionPerformed
-
     CSV csv = new CSV();
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         String compUsuario, compContra;
@@ -125,7 +104,7 @@ public class frmLogin extends javax.swing.JFrame {
         boolean contrasenaIgual = false;
 
         // Read the CSV file
-        List<String> data = csv.leerArchivo("Administradores.csv");
+        List<String> data = csv.obtenerDatosArchivo("Administradores.csv");
         if (data != null) {
             for (String linea : data) {
                 String[] fila = linea.split(",");
@@ -184,10 +163,10 @@ public class frmLogin extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel contrasenaLabel;
+    private javax.swing.JLabel tituloLabel;
     private javax.swing.JTextField txtContra;
     private javax.swing.JTextField txtUsuario;
+    private javax.swing.JLabel usuarioLabel;
     // End of variables declaration//GEN-END:variables
 }
