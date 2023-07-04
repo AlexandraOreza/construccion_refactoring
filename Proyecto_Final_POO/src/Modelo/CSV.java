@@ -99,6 +99,19 @@ public class CSV {
             return null;
         }
     }
+    
+     private String convertirObjetoAFilaCsvProducto(Object dataObject) {
+        if (dataObject instanceof Producto) {
+            Producto produc = (Producto) dataObject;
+            return produc.getIdProducto() + ","
+                    + produc.getNombreProducto() + ","
+                    + produc.getCantidad() + ","
+                    + produc.getDescripcion() + ","
+                    + produc.getPrecio() + "\r\n";
+        } else {
+            return null;
+        }
+    }
 
     public void eliminarFilaDatos(String nombreArchivo,int idFila) {
         List<String> data = obtenerDatosArchivo(nombreArchivo);
