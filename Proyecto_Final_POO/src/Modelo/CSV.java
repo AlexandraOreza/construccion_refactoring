@@ -23,8 +23,9 @@ import java.io.IOException;
  * @author Alexandra
  */
 public class CSV {
-
-    private static final String RUTA_CARPETA = "src\\backupFilesTienda\\";
+    private static final String CLIENTE = "cliente";
+    private static final String ADMINISTRADOR = "administrador";
+    private static final String RUTA_CARPETA = "src/backupFilesTienda/";
     
     public List<String> obtenerDatosArchivo(String nombreArchivoLectura) {
         List lineas = new ArrayList<>();
@@ -44,14 +45,19 @@ public class CSV {
         return lineas;
     }
 
-    public void agregarFilaDatos(String nombreArchivo, Object datosNuevaFila) {
+    public void agregarFilaDatos(String nombreArchivo, Object datosNuevaFila, String tipoPersona) {
         File archivoDatos = new File(RUTA_CARPETA+nombreArchivo);
         try {
             FileWriter escritor = new FileWriter(RUTA_CARPETA+nombreArchivo, true);
             if (!archivoDatos.exists()) {
                 escritor.write("\r\n");
             }
-            escritor.append(convertirObjetoAFilaCsv(datosNuevaFila));
+            if ( tipoPersona.equals(ADMINISTRADOR) ) {
+                escritor.append(convertirAdministradorAFilaCsv(datosNuevaFila));
+            } 
+            if ( tipoPersona.equals(CLIENTE) ) {
+                escritor.append((convertirPersonaAFilaCsv(datosNuevaFila) + "\r\n"));
+            }
             escritor.close();
         } catch (Exception e) {
             System.out.println("Ocurrio un error.");
@@ -63,7 +69,7 @@ public class CSV {
         List<String> data = obtenerDatosArchivo(fileName);
         if (data != null && idFila >= 0 && idFila <= data.size()) {
             int filaModificar = idFila -1;
-            data.set(filaModificar, convertirObjetoAFilaCsv(datosModificados));
+//            data.set(filaModificar, convertirObjetoAFilaCsv(datosModificados));
             
             try {
                 FileWriter csvEscritor = new FileWriter(RUTA_CARPETA+fileName, false);
@@ -85,13 +91,18 @@ public class CSV {
         }
     }
     
-    private String convertirObjetoAFilaCsv(Object dataObject) {
+    private String convertirPersonaAFilaCsv(Object dataObject) {
+        Persona persona = (Persona) dataObject;
+        return persona.getId() + ","
+                + persona.getNombre() + ","
+                + persona.getApellidoPaterno() + ","
+                + persona.getApellidoMaterno();
+    }
+    
+    private String convertirAdministradorAFilaCsv(Object dataObject) {
         if (dataObject instanceof Administrador) {
             Administrador admin = (Administrador) dataObject;
-            return admin.getIdAdministrador() + ","
-                    + admin.getNombre() + ","
-                    + admin.getApellidoPaterno() + ","
-                    + admin.getApellidoMaterno() + ","
+            return convertirPersonaAFilaCsv(admin) + ","
                     + admin.getUsuario() + ","
                     + admin.getContrasenia() + ","
                     + admin.getSueldo() + "\r\n";
@@ -99,7 +110,7 @@ public class CSV {
             return null;
         }
     }
-
+        
     public void eliminarFilaDatos(String nombreArchivo,int idFila) {
         List<String> data = obtenerDatosArchivo(nombreArchivo);
 

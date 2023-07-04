@@ -1,10 +1,9 @@
 
 package Modelo;
-
 import java.util.ArrayList;
 
-public class MetodosAdministrador {
-
+public class MetodosAdministrador implements MetodosDatosPersona {
+    public static final String ADMINISTRADOR = "administrador";
     private ArrayList<Object> datosAdministrador = new ArrayList<>();
     private CSV csv = new CSV();
     private final String nombreArchivo = "Administradores.csv";
@@ -12,27 +11,23 @@ public class MetodosAdministrador {
     public MetodosAdministrador() {
     }
 
-
-    // Metodos para agregar, modificar y eliminar datos del Empleado de la tabla
-    public void agregarDatosAdministrador(Administrador administrador) {
-        csv.agregarFilaDatos(nombreArchivo, administrador);
+    @Override
+    public void agregarDatosPersona(Object dato) {
+        csv.agregarFilaDatos(nombreArchivo, dato, ADMINISTRADOR);
     }
 
-    public void modificarDatosAdministrador(int idAdministrador, Administrador administrador) {
-        csv.modificarFilaDatos(nombreArchivo, idAdministrador, administrador);
+    @Override
+    public void modificarDatosPersona(int id, Object objeto) {
+        csv.modificarFilaDatos(nombreArchivo, id, objeto);
     }
 
-    public void eliminarDatosAdministrador(int idAdministrador) {
-        csv.eliminarFilaDatos(nombreArchivo, idAdministrador);
+    @Override
+    public void eliminarDatosPersona(int id) {
+        csv.eliminarFilaDatos(nombreArchivo, id);
     }
 
-    public boolean existeId(int idAdministrador){
-        return csv.existeId(nombreArchivo, idAdministrador);
+    @Override
+    public boolean existeId(int id) {
+        return csv.existeId(nombreArchivo, id);
     }
-    
-    // Metodo para evaluar la cantidad de empleados registrados
-    public int cantidadAdministradorRegistrados() {
-        return this.datosAdministrador.size();
-    }
-
 }
