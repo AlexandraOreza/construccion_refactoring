@@ -4,7 +4,7 @@ package Modelo;
 
 public class MetodosCliente implements MetodosDatosPersona {
     private static final String CLIENTE = "cliente";
-    CSV csv = new CSV();
+    private CSV csv = new CSV();
     private final String nombreArchivo = "Clientes.csv";
     // Constructor vacio
     public MetodosCliente() {
