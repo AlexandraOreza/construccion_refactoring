@@ -65,9 +65,4 @@ public class MetodosVenta {
     public Double getTotal(){
         return venta.getTotal();
     }
-
-    public static void main(String[] args) {
-        MetodosVenta m = new MetodosVenta();
-        m.getElectronicos();
-    }
 }
