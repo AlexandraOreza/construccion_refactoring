@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Vista;
+import Modelo.CSV;
+import Modelo.MetodosVenta;
 import Modelo.Producto;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,18 +19,19 @@ import javax.swing.table.DefaultTableModel;
  * @author erick
  */
 public class frmVenta extends javax.swing.JFrame {
-
-    String electronicos[]={"MousePad ", "Mouse ", "Teclado ", "Laptop Dell ", "Cargador puerto C ", "Audifonos Bluetooth", "Monitor ", "Cable HDMI ", "Bocinas ", "Alexa Echo Dot "  };
-    double precios[]={300.00, 350.90, 500.60, 15000.00, 200.50, 600.00, 3000.00, 450.00, 1000.00, 1300.00 };
     double precio=0;
     int cantidad=0;
+    
+    private final MetodosVenta metodosVenta = new MetodosVenta();
+    
     DefaultTableModel modelo = new DefaultTableModel();
-    ArrayList<Producto> listaProductos = new ArrayList<Producto>();
+    ArrayList<Producto> listaProductos = new ArrayList<>();
     
     public frmVenta() {
         initComponents();
         this.setLocationRelativeTo(null);
-        DefaultComboBoxModel comboModel = new DefaultComboBoxModel (electronicos);
+        
+        DefaultComboBoxModel comboModel = new DefaultComboBoxModel (metodosVenta.getElectronicos().toArray());
         comboBoxProducto.setModel(comboModel);
         modelo.addColumn("ID PRODUCTO");
         modelo.addColumn("DESCRIPCION");
@@ -57,7 +60,7 @@ public class frmVenta extends javax.swing.JFrame {
         spinnerCantidad = new javax.swing.JSpinner();
         comboBoxProducto = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblProductos = new javax.swing.JTable();
+        tablaProductos = new javax.swing.JTable();
         labelIVA = new javax.swing.JLabel();
         labelSubtotal = new javax.swing.JLabel();
         labelTotal = new javax.swing.JLabel();
@@ -70,8 +73,8 @@ public class frmVenta extends javax.swing.JFrame {
         botonImprimir = new javax.swing.JButton();
         botonRegresar = new javax.swing.JToggleButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        menuDesplegable = new javax.swing.JMenu();
+        menuDeplegableCliente = new javax.swing.JCheckBoxMenuItem();
 
         jLabel8.setText("PRECIO");
 
@@ -119,8 +122,8 @@ public class frmVenta extends javax.swing.JFrame {
             }
         });
 
-        tblProductos.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        tblProductos.setModel(new javax.swing.table.DefaultTableModel(
+        tablaProductos.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -139,9 +142,9 @@ public class frmVenta extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tblProductos);
-        if (tblProductos.getColumnModel().getColumnCount() > 0) {
-            tblProductos.getColumnModel().getColumn(0).setResizable(false);
+        jScrollPane1.setViewportView(tablaProductos);
+        if (tablaProductos.getColumnModel().getColumnCount() > 0) {
+            tablaProductos.getColumnModel().getColumn(0).setResizable(false);
         }
 
         labelIVA.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -196,18 +199,18 @@ public class frmVenta extends javax.swing.JFrame {
             }
         });
 
-        jMenu1.setText("File");
+        menuDesplegable.setText("File");
 
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("CLIENTE");
-        jCheckBoxMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        menuDeplegableCliente.setSelected(true);
+        menuDeplegableCliente.setText("CLIENTE");
+        menuDeplegableCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBoxMenuItem1ActionPerformed(evt);
+                menuDeplegableClienteActionPerformed(evt);
             }
         });
-        jMenu1.add(jCheckBoxMenuItem1);
+        menuDesplegable.add(menuDeplegableCliente);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(menuDesplegable);
 
         setJMenuBar(jMenuBar1);
 
@@ -339,7 +342,7 @@ public class frmVenta extends javax.swing.JFrame {
 
     private void botonLimpiarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonLimpiarMouseClicked
         
-        DefaultTableModel model = (DefaultTableModel) tblProductos.getModel();
+        DefaultTableModel model = (DefaultTableModel) tablaProductos.getModel();
         model.setRowCount(0);
         labelValorSubtotal.setText("0");
         labelValorIVA.setText("0");
@@ -355,9 +358,9 @@ public class frmVenta extends javax.swing.JFrame {
             FileWriter archivoEscrito = new FileWriter(archivo);
             BufferedWriter bw = new BufferedWriter(archivoEscrito);
             
-             for(int i = 0; i < tblProductos.getRowCount(); i++){//rows
-                for(int j = 0; j < tblProductos.getColumnCount(); j++){//columns
-                    bw.write(tblProductos.getValueAt(i, j).toString()+" ");
+             for(int i = 0; i < tablaProductos.getRowCount(); i++){//rows
+                for(int j = 0; j < tablaProductos.getColumnCount(); j++){//columns
+                    bw.write(tablaProductos.getValueAt(i, j).toString()+" ");
                 }
                 bw.newLine();
             }
@@ -370,11 +373,11 @@ public class frmVenta extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_botonImprimirActionPerformed
 
-    private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
+    private void menuDeplegableClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDeplegableClienteActionPerformed
         frmCliente ClienteVenta = new frmCliente();
             ClienteVenta.setVisible(true);
             this.dispose();
-    }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
+    }//GEN-LAST:event_menuDeplegableClienteActionPerformed
 
     private void botonRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegresarActionPerformed
         frmMenu regresarMenu= new frmMenu();
@@ -407,7 +410,7 @@ public class frmVenta extends javax.swing.JFrame {
     }
     
     public void calcularPrecio() {
-        precio=precios[comboBoxProducto.getSelectedIndex()];
+        precio = metodosVenta.getPrecioProducto(comboBoxProducto.getSelectedIndex());
         cantidad=Integer.parseInt(spinnerCantidad.getValue().toString());
         labelValorPrecio.setText(monetario(precio));
         labelValorImporte.setText(monetario(precio*cantidad));
@@ -424,21 +427,22 @@ public class frmVenta extends javax.swing.JFrame {
         }
         double subtotal=0;
         for (Producto p : listaProductos){
-            Object x[] = new Object[4];
-            x[0]=p.getDescripcion();
-            x[1]=monetario(p.getPrecio());
-            x[2]=p.getCantidad();
-            x[3]=monetario(p.getImporte());
+            Object x[] = new Object[5];
+            x[0] = p.getIdProducto();
+            x[1] = p.getDescripcion();
+            x[2] = monetario(p.getPrecio());
+            x[3] = p.getCantidad();
+            x[4] = monetario(p.getImporte());
             subtotal += p.getImporte();
             modelo.addRow(x);
                     
         }
-        double iva= subtotal *0.16;
-        double total= subtotal+iva;
-        labelValorSubtotal.setText(monetario(subtotal));
-        labelValorIVA.setText(monetario(iva));
-        labelValorTotal.setText(monetario(total));
-        tblProductos.setModel(modelo);
+        metodosVenta.calcularTotal(subtotal);
+        
+        labelValorSubtotal.setText(monetario(metodosVenta.getSubtotal()));
+        labelValorIVA.setText(monetario(metodosVenta.getIVA()));
+        labelValorTotal.setText(monetario(metodosVenta.getTotal()));
+        tablaProductos.setModel(modelo);
     }
     /**
      * @param args the command line arguments
@@ -481,10 +485,8 @@ public class frmVenta extends javax.swing.JFrame {
     private javax.swing.JButton botonLimpiar;
     private javax.swing.JToggleButton botonRegresar;
     private javax.swing.JComboBox<String> comboBoxProducto;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelCantidad;
@@ -499,7 +501,9 @@ public class frmVenta extends javax.swing.JFrame {
     private javax.swing.JLabel labelValorPrecio;
     private javax.swing.JLabel labelValorSubtotal;
     private javax.swing.JLabel labelValorTotal;
+    private javax.swing.JCheckBoxMenuItem menuDeplegableCliente;
+    private javax.swing.JMenu menuDesplegable;
     private javax.swing.JSpinner spinnerCantidad;
-    private javax.swing.JTable tblProductos;
+    private javax.swing.JTable tablaProductos;
     // End of variables declaration//GEN-END:variables
 }
