@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class MetodosAdministrador implements MetodosDatosPersona {
     public static final String ADMINISTRADOR = "administrador";
-    private ArrayList<Object> datosAdministrador = new ArrayList<>();
-    private CSV csv = new CSV();
+    private final ArrayList<Object> datosAdministrador = new ArrayList<>();
+    private final CSV csv = new CSV();
     private final String nombreArchivo = "Administradores.csv";
     // Constructor vacio
     public MetodosAdministrador() {

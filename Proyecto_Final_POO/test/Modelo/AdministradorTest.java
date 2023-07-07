@@ -103,21 +103,5 @@ public class AdministradorTest {
         Administrador instance = null;
         instance.setUsuario(usuario);
        
-    }
-
-    /**
-     * Test of setIdAdministrador method, of class Administrador.
-     */
-    @Test
-    public void testSetIdAdministrador() {
-        System.out.println("setIdAdministrador");
-        int idAdministrador = 0;
-        Administrador instance = null;
-        instance.setIdAdministrador(idAdministrador);
-       
-    }
-
-    
-   
-    
+    }    
 }
