@@ -1,1 +1,0 @@
-# construccion_refactoring

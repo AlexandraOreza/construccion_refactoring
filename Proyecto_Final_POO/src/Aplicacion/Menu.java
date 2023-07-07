@@ -9,4 +9,3 @@ public class Menu {
         nuevaVen.setVisible(true);
     }
 }
-// falta crear un jFram para el login que se llame nuevaVen
