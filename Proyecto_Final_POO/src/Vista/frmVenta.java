@@ -3,14 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Vista;
-import Modelo.Productos;
+import Modelo.CSV;
+import Modelo.MetodosVenta;
+import Modelo.Producto;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
@@ -20,19 +19,21 @@ import javax.swing.table.DefaultTableModel;
  * @author erick
  */
 public class frmVenta extends javax.swing.JFrame {
-
-    String electronicos[]={"MousePad ", "Mouse ", "Teclado ", "Laptop Dell ", "Cargador puerto C ", "Audifonos Bluetooth", "Monitor ", "Cable HDMI ", "Bocinas ", "Alexa Echo Dot "  };
-    double precios[]={300.00, 350.90, 500.60, 15000.00, 200.50, 600.00, 3000.00, 450.00, 1000.00, 1300.00 };
     double precio=0;
     int cantidad=0;
+    
+    private final MetodosVenta metodosVenta = new MetodosVenta();
+    
     DefaultTableModel modelo = new DefaultTableModel();
-    ArrayList<Productos> listaProductos = new ArrayList<Productos>();
+    ArrayList<Producto> listaProductos = new ArrayList<>();
     
     public frmVenta() {
         initComponents();
         this.setLocationRelativeTo(null);
-        DefaultComboBoxModel comboModel = new DefaultComboBoxModel (electronicos);
-        cboProd.setModel(comboModel);
+        
+        DefaultComboBoxModel comboModel = new DefaultComboBoxModel (metodosVenta.getElectronicos().toArray());
+        comboBoxProducto.setModel(comboModel);
+        modelo.addColumn("ID PRODUCTO");
         modelo.addColumn("DESCRIPCION");
         modelo.addColumn("PRECIO U.");
         modelo.addColumn("CANTIDAD");
@@ -51,28 +52,29 @@ public class frmVenta extends javax.swing.JFrame {
 
         jLabel8 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        btnAgregar = new javax.swing.JButton();
-        spnCantidad = new javax.swing.JSpinner();
-        cboProd = new javax.swing.JComboBox<>();
+        labelProducto = new javax.swing.JLabel();
+        labelCantidad = new javax.swing.JLabel();
+        labelPrecio = new javax.swing.JLabel();
+        labelImporte = new javax.swing.JLabel();
+        botonAgregar = new javax.swing.JButton();
+        spinnerCantidad = new javax.swing.JSpinner();
+        comboBoxProducto = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblProductos = new javax.swing.JTable();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        lblSubtotal = new javax.swing.JLabel();
-        lblIVA = new javax.swing.JLabel();
-        lblTotal = new javax.swing.JLabel();
-        lblPrecio = new javax.swing.JLabel();
-        lblImporte = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        btnTxt = new javax.swing.JButton();
+        tablaProductos = new javax.swing.JTable();
+        labelIVA = new javax.swing.JLabel();
+        labelSubtotal = new javax.swing.JLabel();
+        labelTotal = new javax.swing.JLabel();
+        labelValorSubtotal = new javax.swing.JLabel();
+        labelValorIVA = new javax.swing.JLabel();
+        labelValorTotal = new javax.swing.JLabel();
+        labelValorPrecio = new javax.swing.JLabel();
+        labelValorImporte = new javax.swing.JLabel();
+        botonLimpiar = new javax.swing.JButton();
+        botonImprimir = new javax.swing.JButton();
+        botonRegresar = new javax.swing.JToggleButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        menuDesplegable = new javax.swing.JMenu();
+        menuDeplegableCliente = new javax.swing.JCheckBoxMenuItem();
 
         jLabel8.setText("PRECIO");
 
@@ -82,115 +84,133 @@ public class frmVenta extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(153, 0, 0));
         jLabel1.setText("ELECTRONICAS WU");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel2.setText("PRODUCTO");
+        labelProducto.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        labelProducto.setText("PRODUCTO");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel3.setText("CANTIDAD");
+        labelCantidad.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        labelCantidad.setText("CANTIDAD");
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel4.setText("PRECIO");
+        labelPrecio.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        labelPrecio.setText("PRECIO");
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel5.setText("IMPORTE");
+        labelImporte.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        labelImporte.setText("IMPORTE");
 
-        btnAgregar.setBackground(new java.awt.Color(153, 255, 153));
-        btnAgregar.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        btnAgregar.setForeground(new java.awt.Color(0, 153, 51));
-        btnAgregar.setText("+");
-        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+        botonAgregar.setBackground(new java.awt.Color(153, 255, 153));
+        botonAgregar.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        botonAgregar.setForeground(new java.awt.Color(0, 153, 51));
+        botonAgregar.setText("+");
+        botonAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarActionPerformed(evt);
+                botonAgregarActionPerformed(evt);
             }
         });
 
-        spnCantidad.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        spnCantidad.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
-        spnCantidad.addChangeListener(new javax.swing.event.ChangeListener() {
+        spinnerCantidad.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        spinnerCantidad.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+        spinnerCantidad.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                spnCantidadStateChanged(evt);
+                spinnerCantidadStateChanged(evt);
             }
         });
 
-        cboProd.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        cboProd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cboProd.addActionListener(new java.awt.event.ActionListener() {
+        comboBoxProducto.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        comboBoxProducto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboProdActionPerformed(evt);
+                comboBoxProductoActionPerformed(evt);
             }
         });
 
-        tblProductos.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        tblProductos.setModel(new javax.swing.table.DefaultTableModel(
+        tablaProductos.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID Producto", "Decripction", "Precio", "Cantidad", "Importe"
             }
-        ));
-        jScrollPane1.setViewportView(tblProductos);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel9.setText("IVA");
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablaProductos);
+        if (tablaProductos.getColumnModel().getColumnCount() > 0) {
+            tablaProductos.getColumnModel().getColumn(0).setResizable(false);
+        }
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel10.setText("SUBTOTAL");
+        labelIVA.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        labelIVA.setText("IVA");
 
-        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel12.setText("TOTAL");
+        labelSubtotal.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        labelSubtotal.setText("SUBTOTAL");
 
-        lblSubtotal.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblSubtotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblSubtotal.setText("$0.00 MXN");
+        labelTotal.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        labelTotal.setText("TOTAL");
 
-        lblIVA.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblIVA.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblIVA.setText("$0.00 MXN");
+        labelValorSubtotal.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        labelValorSubtotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelValorSubtotal.setText("$0.00 MXN");
 
-        lblTotal.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblTotal.setText("$0.00 MXN");
+        labelValorIVA.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        labelValorIVA.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelValorIVA.setText("$0.00 MXN");
 
-        lblPrecio.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblPrecio.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblPrecio.setText("$0.00 MXN");
+        labelValorTotal.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        labelValorTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelValorTotal.setText("$0.00 MXN");
 
-        lblImporte.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblImporte.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblImporte.setText("$0.00 MXN");
+        labelValorPrecio.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        labelValorPrecio.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelValorPrecio.setText("$0.00 MXN");
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton1.setText("LIMPIAR");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        labelValorImporte.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        labelValorImporte.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelValorImporte.setText("$0.00 MXN");
+
+        botonLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        botonLimpiar.setText("LIMPIAR");
+        botonLimpiar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                botonLimpiarMouseClicked(evt);
             }
         });
 
-        btnTxt.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnTxt.setText("IMPRIMIR");
-        btnTxt.addActionListener(new java.awt.event.ActionListener() {
+        botonImprimir.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        botonImprimir.setText("IMPRIMIR");
+        botonImprimir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTxtActionPerformed(evt);
+                botonImprimirActionPerformed(evt);
             }
         });
 
-        jMenu1.setText("File");
-
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("CLIENTE");
-        jCheckBoxMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        botonRegresar.setText("Regresar");
+        botonRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBoxMenuItem1ActionPerformed(evt);
+                botonRegresarActionPerformed(evt);
             }
         });
-        jMenu1.add(jCheckBoxMenuItem1);
 
-        jMenuBar1.add(jMenu1);
+        menuDesplegable.setText("File");
+
+        menuDeplegableCliente.setSelected(true);
+        menuDeplegableCliente.setText("CLIENTE");
+        menuDeplegableCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuDeplegableClienteActionPerformed(evt);
+            }
+        });
+        menuDesplegable.add(menuDeplegableCliente);
+
+        jMenuBar1.add(menuDesplegable);
 
         setJMenuBar(jMenuBar1);
 
@@ -199,53 +219,53 @@ public class frmVenta extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(217, 217, 217))
+            .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(botonRegresar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(botonImprimir)
+                                .addGap(77, 77, 77)
+                                .addComponent(botonLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelIVA)
+                                    .addComponent(labelSubtotal)
+                                    .addComponent(labelTotal))
+                                .addGap(39, 39, 39)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(labelValorSubtotal, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                                    .addComponent(labelValorIVA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(labelValorTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(72, 72, 72))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
                         .addGap(43, 43, 43))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
+                            .addComponent(labelProducto)
+                            .addComponent(labelCantidad))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(spnCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cboProd, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(spinnerCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboBoxProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
+                            .addComponent(labelPrecio)
+                            .addComponent(labelImporte))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
-                            .addComponent(lblImporte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(labelValorPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
+                            .addComponent(labelValorImporte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(29, 29, 29)
-                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(botonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(14, 14, 14))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(217, 217, 217))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnTxt)
-                                .addGap(77, 77, 77)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel10)
-                                    .addComponent(jLabel12))
-                                .addGap(39, 39, 39)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(lblSubtotal, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
-                                    .addComponent(lblIVA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(72, 72, 72))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,57 +276,59 @@ public class frmVenta extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4)
-                            .addComponent(cboProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(labelProducto)
+                            .addComponent(labelPrecio)
+                            .addComponent(comboBoxProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel5)
-                            .addComponent(spnCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(labelCantidad)
+                            .addComponent(spinnerCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(botonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(lblPrecio)
+                            .addComponent(labelValorPrecio)
                             .addGap(20, 20, 20)
-                            .addComponent(lblImporte))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(labelValorImporte)
+                                .addComponent(labelImporte)))))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel10)
+                        .addComponent(labelSubtotal)
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel9)
-                            .addComponent(lblIVA)))
-                    .addComponent(lblSubtotal))
+                            .addComponent(labelIVA)
+                            .addComponent(labelValorIVA)))
+                    .addComponent(labelValorSubtotal))
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(lblTotal))
+                    .addComponent(labelTotal)
+                    .addComponent(labelValorTotal))
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(btnTxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(botonLimpiar)
+                    .addComponent(botonImprimir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(botonRegresar))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cboProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboProdActionPerformed
+    private void comboBoxProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxProductoActionPerformed
         calcularPrecio();
-    }//GEN-LAST:event_cboProdActionPerformed
+    }//GEN-LAST:event_comboBoxProductoActionPerformed
 
-    private void spnCantidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnCantidadStateChanged
+    private void spinnerCantidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spinnerCantidadStateChanged
         calcularPrecio();
-    }//GEN-LAST:event_spnCantidadStateChanged
+    }//GEN-LAST:event_spinnerCantidadStateChanged
 
-    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        Productos producto = new Productos();
-        producto.setClaveP(cboProd.getSelectedIndex());
-        producto.setDescripcion(cboProd.getSelectedItem().toString());
+    private void botonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarActionPerformed
+        Producto producto = new Producto();
+        producto.setIdProducto(comboBoxProducto.getSelectedIndex());
+        producto.setDescripcion(comboBoxProducto.getSelectedItem().toString());
         producto.setPrecio(precio);
         producto.setCantidad(cantidad);
         producto.setImporte(precio*cantidad);
@@ -316,29 +338,29 @@ public class frmVenta extends javax.swing.JFrame {
         
         actualizarTabla();
         borrarVenta();
-    }//GEN-LAST:event_btnAgregarActionPerformed
+    }//GEN-LAST:event_botonAgregarActionPerformed
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+    private void botonLimpiarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonLimpiarMouseClicked
         
-        DefaultTableModel model = (DefaultTableModel) tblProductos.getModel();
+        DefaultTableModel model = (DefaultTableModel) tablaProductos.getModel();
         model.setRowCount(0);
-        lblSubtotal.setText("0");
-        lblIVA.setText("0");
-        lblTotal.setText("0");
+        labelValorSubtotal.setText("0");
+        labelValorIVA.setText("0");
+        labelValorTotal.setText("0");
         
         
-    }//GEN-LAST:event_jButton1MouseClicked
+    }//GEN-LAST:event_botonLimpiarMouseClicked
 
-    private void btnTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTxtActionPerformed
-        String archivoImpresion ="Recibo cliente";
+    private void botonImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonImprimirActionPerformed
+        String archivoImpresion ="src/backupFilesTienda/Recibo cliente";
         File archivo = new File(archivoImpresion);
         try{
             FileWriter archivoEscrito = new FileWriter(archivo);
             BufferedWriter bw = new BufferedWriter(archivoEscrito);
             
-             for(int i = 0; i < tblProductos.getRowCount(); i++){//rows
-                for(int j = 0; j < tblProductos.getColumnCount(); j++){//columns
-                    bw.write(tblProductos.getValueAt(i, j).toString()+" ");
+             for(int i = 0; i < tablaProductos.getRowCount(); i++){//rows
+                for(int j = 0; j < tablaProductos.getColumnCount(); j++){//columns
+                    bw.write(tablaProductos.getValueAt(i, j).toString()+" ");
                 }
                 bw.newLine();
             }
@@ -349,17 +371,23 @@ public class frmVenta extends javax.swing.JFrame {
         } catch (IOException ex) {
             java.util.logging.Logger.getLogger(frmVenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btnTxtActionPerformed
+    }//GEN-LAST:event_botonImprimirActionPerformed
 
-    private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
+    private void menuDeplegableClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDeplegableClienteActionPerformed
         frmCliente ClienteVenta = new frmCliente();
             ClienteVenta.setVisible(true);
             this.dispose();
-    }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
+    }//GEN-LAST:event_menuDeplegableClienteActionPerformed
+
+    private void botonRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegresarActionPerformed
+        frmMenu regresarMenu= new frmMenu();
+        regresarMenu.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_botonRegresarActionPerformed
     
-    public boolean buscarProducto(Productos nuevo){
-        for (Productos p : listaProductos){
-            if(p.getClaveP()==nuevo.getClaveP()){
+    public boolean buscarProducto(Producto nuevo){
+        for (Producto p : listaProductos){
+            if(p.getIdProducto()==nuevo.getIdProducto()){
                 int nuevaCantidad=p.getCantidad()+nuevo.getCantidad();
                 p.setCantidad(nuevaCantidad);
                 p.setImporte(p.getPrecio()*nuevaCantidad);
@@ -373,19 +401,19 @@ public class frmVenta extends javax.swing.JFrame {
     public void borrarVenta(){
         precio=0;
         cantidad=1;
-        lblPrecio.setText(monetario(0));
-        lblImporte.setText(monetario(0));
-        cboProd.setSelectedIndex(0);
-        spnCantidad.setValue(1);
+        labelValorPrecio.setText(monetario(0));
+        labelValorImporte.setText(monetario(0));
+        comboBoxProducto.setSelectedIndex(0);
+        spinnerCantidad.setValue(1);
         calcularPrecio();
         
     }
     
     public void calcularPrecio() {
-        precio=precios[cboProd.getSelectedIndex()];
-        cantidad=Integer.parseInt(spnCantidad.getValue().toString());
-        lblPrecio.setText(monetario(precio));
-        lblImporte.setText(monetario(precio*cantidad));
+        precio = metodosVenta.getPrecioProducto(comboBoxProducto.getSelectedIndex());
+        cantidad=Integer.parseInt(spinnerCantidad.getValue().toString());
+        labelValorPrecio.setText(monetario(precio));
+        labelValorImporte.setText(monetario(precio*cantidad));
         
     }
     
@@ -398,22 +426,23 @@ public class frmVenta extends javax.swing.JFrame {
             modelo.removeRow(0);
         }
         double subtotal=0;
-        for (Productos p : listaProductos){
-            Object x[] = new Object[4];
-            x[0]=p.getDescripcion();
-            x[1]=monetario(p.getPrecio());
-            x[2]=p.getCantidad();
-            x[3]=monetario(p.getImporte());
+        for (Producto p : listaProductos){
+            Object x[] = new Object[5];
+            x[0] = p.getIdProducto();
+            x[1] = p.getDescripcion();
+            x[2] = monetario(p.getPrecio());
+            x[3] = p.getCantidad();
+            x[4] = monetario(p.getImporte());
             subtotal += p.getImporte();
             modelo.addRow(x);
                     
         }
-        double iva= subtotal *0.16;
-        double total= subtotal+iva;
-        lblSubtotal.setText(monetario(subtotal));
-        lblIVA.setText(monetario(iva));
-        lblTotal.setText(monetario(total));
-        tblProductos.setModel(modelo);
+        metodosVenta.calcularTotal(subtotal);
+        
+        labelValorSubtotal.setText(monetario(metodosVenta.getSubtotal()));
+        labelValorIVA.setText(monetario(metodosVenta.getIVA()));
+        labelValorTotal.setText(monetario(metodosVenta.getTotal()));
+        tablaProductos.setModel(modelo);
     }
     /**
      * @param args the command line arguments
@@ -451,29 +480,30 @@ public class frmVenta extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnTxt;
-    private javax.swing.JComboBox<String> cboProd;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
+    private javax.swing.JButton botonAgregar;
+    private javax.swing.JButton botonImprimir;
+    private javax.swing.JButton botonLimpiar;
+    private javax.swing.JToggleButton botonRegresar;
+    private javax.swing.JComboBox<String> comboBoxProducto;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblIVA;
-    private javax.swing.JLabel lblImporte;
-    private javax.swing.JLabel lblPrecio;
-    private javax.swing.JLabel lblSubtotal;
-    private javax.swing.JLabel lblTotal;
-    private javax.swing.JSpinner spnCantidad;
-    private javax.swing.JTable tblProductos;
+    private javax.swing.JLabel labelCantidad;
+    private javax.swing.JLabel labelIVA;
+    private javax.swing.JLabel labelImporte;
+    private javax.swing.JLabel labelPrecio;
+    private javax.swing.JLabel labelProducto;
+    private javax.swing.JLabel labelSubtotal;
+    private javax.swing.JLabel labelTotal;
+    private javax.swing.JLabel labelValorIVA;
+    private javax.swing.JLabel labelValorImporte;
+    private javax.swing.JLabel labelValorPrecio;
+    private javax.swing.JLabel labelValorSubtotal;
+    private javax.swing.JLabel labelValorTotal;
+    private javax.swing.JCheckBoxMenuItem menuDeplegableCliente;
+    private javax.swing.JMenu menuDesplegable;
+    private javax.swing.JSpinner spinnerCantidad;
+    private javax.swing.JTable tablaProductos;
     // End of variables declaration//GEN-END:variables
 }

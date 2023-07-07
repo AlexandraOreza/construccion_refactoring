@@ -19,10 +19,9 @@ public class Administrador extends Persona{
     // Constructor
     public Administrador(String nombre, String apellidoPaterno, String apellidoMaterno, double sueldo, String usuario, int idAdministrador, String contrasenia) {
         
-        super(nombre, apellidoPaterno, apellidoMaterno);
+        super(nombre, apellidoPaterno, apellidoMaterno, idAdministrador);
         this.sueldo = sueldo;
         this.usuario = usuario;
-        this.idAdministrador = idAdministrador;
         this.contrasenia = contrasenia;
     }
     
@@ -40,9 +39,6 @@ public class Administrador extends Persona{
     public String getUsuario() {
         return usuario;
     }
-    public int getIdAdministrador() {
-        return idAdministrador;
-    }
 
     public void setSueldo(double sueldo) {
         this.sueldo = sueldo;
@@ -50,15 +46,11 @@ public class Administrador extends Persona{
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
-    public void setIdAdministrador(int idAdministrador) {
-        this.idAdministrador = idAdministrador;
-    }
     
      @Override
     public String toString() {
-        return "[ ID: " + getIdAdministrador() + "]"
-                // Llamamos al metodo toString de la super clase
-                + super.toString()
+        return // Llamamos al metodo toString de la super clase
+                super.toString()
                 + "\n" + "Sueldo: $" + getSueldo()
                 + "\n" + "Usuario: " + getUsuario();
     }

@@ -5,6 +5,7 @@
 package Vista;
 
 import Modelo.CSV;
+import Modelo.Encriptacion;
 import javax.swing.JOptionPane;
 import java.util.List;
 
@@ -35,8 +36,8 @@ public class frmLogin extends javax.swing.JFrame {
         txtUsuario = new javax.swing.JTextField();
         usuarioLabel = new javax.swing.JLabel();
         contrasenaLabel = new javax.swing.JLabel();
-        txtContra = new javax.swing.JTextField();
         btnLogin = new javax.swing.JButton();
+        txtContra = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,9 +71,9 @@ public class frmLogin extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnLogin)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txtUsuario)
-                        .addComponent(txtContra, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(txtContra, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtUsuario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -84,11 +85,11 @@ public class frmLogin extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(usuarioLabel))
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(contrasenaLabel)
                     .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
+                .addGap(35, 35, 35)
                 .addComponent(btnLogin)
                 .addContainerGap(72, Short.MAX_VALUE))
         );
@@ -98,17 +99,19 @@ public class frmLogin extends javax.swing.JFrame {
 
     CSV csv = new CSV();
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        String compUsuario, compContra;
-        compContra = txtContra.getText();
+        String compUsuario, compContra, cifradaClave;
+        compContra = String.valueOf(txtContra.getPassword());
         compUsuario = txtUsuario.getText();
+        //intento omar encriptacion
+        Encriptacion encriptadaContra = new Encriptacion();
+        cifradaClave= encriptadaContra.MD5(compContra);
         boolean contrasenaIgual = false;
-
         // Read the CSV file
         List<String> data = csv.obtenerDatosArchivo("Administradores.csv");
         if (data != null) {
             for (String linea : data) {
                 String[] fila = linea.split(",");
-                if (fila.length >= 6 && compContra.equals(fila[5]) && compUsuario.equals(fila[4])) {
+                if (fila.length >= 6 && cifradaClave.equals(fila[5]) && compUsuario.equals(fila[4])) {
                     contrasenaIgual = true;
                     break;
                 }
@@ -118,6 +121,8 @@ public class frmLogin extends javax.swing.JFrame {
         }
 
         if (contrasenaIgual) {
+            //nuevo OMAR
+            JOptionPane.showMessageDialog(null, "Bienvenid@: "+compUsuario);
             frmMenu menuVista = new frmMenu();
             menuVista.setVisible(true);
             this.dispose();
@@ -165,7 +170,7 @@ public class frmLogin extends javax.swing.JFrame {
     private javax.swing.JButton btnLogin;
     private javax.swing.JLabel contrasenaLabel;
     private javax.swing.JLabel tituloLabel;
-    private javax.swing.JTextField txtContra;
+    private javax.swing.JPasswordField txtContra;
     private javax.swing.JTextField txtUsuario;
     private javax.swing.JLabel usuarioLabel;
     // End of variables declaration//GEN-END:variables

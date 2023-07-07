@@ -40,7 +40,7 @@ public class CSVTest {
      */
     @Test
     public void testAgregarFilaDatos() {
-        csv.agregarFilaDatos(TEST_FILE_NAME, TEST_DATA);
+        csv.agregarFilaDatos(TEST_FILE_NAME, TEST_DATA, "administrador");
         
         List<String> datosArchivo = csv.obtenerDatosArchivo(TEST_FILE_NAME);
         assertEquals(3, datosArchivo.size());
