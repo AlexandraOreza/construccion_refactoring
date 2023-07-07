@@ -70,4 +70,10 @@
     nbproject/build-impl.xml file. 
 
     -->
+<target name="sonar">
+  <exec executable="sonar-scanner">
+    <arg value="-Dsonar.login=${env.SONAR_TOKEN}" />
+  </exec>
+</target>
+
 </project>

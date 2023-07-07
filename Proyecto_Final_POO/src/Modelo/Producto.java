@@ -80,11 +80,4 @@ public class Producto {
     public void setImporte(double importe) {
         this.importe = importe;
     }
-    
-    
-    
-    
-    
-    
-    
 }
