@@ -36,8 +36,4 @@ public class Venta {
     public void setTotal() {
         this.total = getSubtotal() + getIVA();
     }
-
-    
-    
-    
 }

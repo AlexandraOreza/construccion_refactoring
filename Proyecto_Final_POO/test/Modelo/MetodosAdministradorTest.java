@@ -2,14 +2,21 @@ package Modelo;
 
 
 import org.junit.Test;
+import static org.junit.Assert.*;
+import org.junit.Before;
 
 /**
  *
  * @author zhuwu1
  */
 public class MetodosAdministradorTest {
+    private Administrador admin;
+    private MetodosAdministrador metodos;
     
-    public MetodosAdministradorTest() {
+    @Before
+    public void setUpClass(){
+        admin = new Administrador("John","Doe","D",100.0,"Jhon",4,"151");
+        metodos = new MetodosAdministrador();
     }
     
     /**
@@ -18,9 +25,7 @@ public class MetodosAdministradorTest {
     @Test
     public void testAgregarDatosAdministrador() {
         System.out.println("agregarDatosAdministrador");
-        Administrador administrador = null;
-        MetodosAdministrador instance = new MetodosAdministrador();
-        instance.agregarDatosPersona(administrador);
+        metodos.agregarDatosPersona(admin);
     }
 
     /**
@@ -29,11 +34,9 @@ public class MetodosAdministradorTest {
     @Test
     public void testModificarDatosAdministrador() {
         System.out.println("modificarDatosAdministrador");
-        int idAdministrador = 1;
-        Administrador administrador = null;
-        MetodosAdministrador instance = new MetodosAdministrador();
-        instance.modificarDatosPersona(idAdministrador, administrador);
-        
+        String nombre = "Mary";
+        admin.setApellidoMaterno(nombre);
+        metodos.modificarDatosPersona(admin.getId(), admin);
     }
 
     /**
@@ -42,9 +45,13 @@ public class MetodosAdministradorTest {
     @Test
     public void testEliminarDatosAdministrador() {
         System.out.println("eliminarDatosAdministrador");
-        Administrador administrador = null;
-        MetodosAdministrador instance = new MetodosAdministrador();
-        instance.eliminarDatosPersona(administrador.getId());
+        metodos.eliminarDatosPersona(admin.getId());
        
     }    
+    
+    @Test
+    public void testExisteId(){
+        boolean resultado = metodos.existeId(4);
+        assertFalse(resultado);
+    }
 }
