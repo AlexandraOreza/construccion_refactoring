@@ -4,8 +4,14 @@
  */
 package Modelo;
 
+import Vista.frmVenta;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
+import javax.swing.JTable;
 
 /**
  *
@@ -64,5 +70,27 @@ public class MetodosVenta {
     
     public Double getTotal(){
         return venta.getTotal();
+    }
+    
+    public void imprimirRecibo(JTable tablaProductos){
+        String archivoImpresion ="src/backupFilesTienda/Ventas/ReciboCliente.txt";
+        File archivo = new File(archivoImpresion);
+        try{
+            FileWriter archivoEscrito = new FileWriter(archivo);
+            BufferedWriter bw = new BufferedWriter(archivoEscrito);
+            
+             for(int i = 0; i < tablaProductos.getRowCount(); i++){//rows
+                for(int j = 0; j < tablaProductos.getColumnCount(); j++){//columns
+                    bw.write(tablaProductos.getValueAt(i, j).toString()+" ");
+                }
+                bw.newLine();
+            }
+            
+            bw.close();
+            archivoEscrito.close();
+        
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(frmVenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
     }
 }

@@ -20,9 +20,9 @@ public class CSVTest {
     private static Administrador TEST_DATA;
     
     @Before
-    public static void setupClass(){
+    public void setupClass(){
         csv = new CSV();
-        TEST_DATA = new Administrador("John","Doe","D",100.0,"Jhon",3,"151");
+        TEST_DATA = new Administrador("John","Doe","D",100.0,"Jhon",4,"151");
     }
     
     /**
@@ -32,7 +32,7 @@ public class CSVTest {
     public void obtenerDatosArchivo() {
         List<String> datosArchivo = csv.obtenerDatosArchivo(TEST_FILE_NAME);
         assertNotNull(datosArchivo);
-        assertEquals(2, datosArchivo.size());
+        assertEquals(3, datosArchivo.size());
     }
 
     /**
@@ -43,7 +43,7 @@ public class CSVTest {
         csv.agregarFilaDatos(TEST_FILE_NAME, TEST_DATA, "administrador");
         
         List<String> datosArchivo = csv.obtenerDatosArchivo(TEST_FILE_NAME);
-        assertEquals(3, datosArchivo.size());
+        assertEquals(4, datosArchivo.size());
     }
     
     /**
@@ -51,13 +51,13 @@ public class CSVTest {
      */
     @Test
     public void testEliminarFilaDatos() {
-        csv.eliminarFilaDatos(TEST_FILE_NAME, 3);
+        csv.eliminarFilaDatos(TEST_FILE_NAME, 4);
         
         List<String> listaDatosModificados = csv.obtenerDatosArchivo(TEST_FILE_NAME);
 
-        assertEquals(2, listaDatosModificados.size());
-        assertEquals("1,Becky2, Zhu, Wu, Becky2,123,1500", listaDatosModificados.get(0));
-        assertEquals("2,Alex,Oreza,Mendicuti,Alex,321,5000", listaDatosModificados.get(1));
+        assertEquals(3, listaDatosModificados.size());
+        assertEquals("1,Becky2,Zhu,Wu,Becky2,202cb962ac59075b964b07152d234b70,1500.0", listaDatosModificados.get(0));
+        assertEquals("2,Alex,Oreza,Mendicuti,Alex,caf1a3dfb505ffed0d024130f58c5cfa,5000.0", listaDatosModificados.get(1));
     }
 
     /**

@@ -352,25 +352,7 @@ public class frmVenta extends javax.swing.JFrame {
     }//GEN-LAST:event_botonLimpiarMouseClicked
 
     private void botonImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonImprimirActionPerformed
-        String archivoImpresion ="src/backupFilesTienda/Recibo cliente";
-        File archivo = new File(archivoImpresion);
-        try{
-            FileWriter archivoEscrito = new FileWriter(archivo);
-            BufferedWriter bw = new BufferedWriter(archivoEscrito);
-            
-             for(int i = 0; i < tablaProductos.getRowCount(); i++){//rows
-                for(int j = 0; j < tablaProductos.getColumnCount(); j++){//columns
-                    bw.write(tablaProductos.getValueAt(i, j).toString()+" ");
-                }
-                bw.newLine();
-            }
-            
-            bw.close();
-            archivoEscrito.close();
-        
-        } catch (IOException ex) {
-            java.util.logging.Logger.getLogger(frmVenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+        metodosVenta.imprimirRecibo(tablaProductos);
     }//GEN-LAST:event_botonImprimirActionPerformed
 
     private void menuDeplegableClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDeplegableClienteActionPerformed

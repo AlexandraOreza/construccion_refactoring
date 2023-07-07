@@ -1,0 +1,2 @@
+0 MousePad $ 300.0 MXN 1 $ 300.0 MXN 
+6 Monitor $ 3000.0 MXN 3 $ 9000.0 MXN 

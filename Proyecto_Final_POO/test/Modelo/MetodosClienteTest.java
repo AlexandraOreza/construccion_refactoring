@@ -62,7 +62,7 @@ public class MetodosClienteTest {
     }
 
     @Test
-    public void testExisteIdWhenIdExists() {
+    public void testExisteIdCuandoIdExiste() {
         int id = 1;
         csvStub.setExisteIdResult(true);
 
@@ -72,7 +72,7 @@ public class MetodosClienteTest {
     }
 
     @Test
-    public void testExisteIdWhenIdDoesNotExist() {
+    public void testExisteIdCuandoIdNoExiste() {
         int id = 1;
         csvStub.setExisteIdResult(false);
 
