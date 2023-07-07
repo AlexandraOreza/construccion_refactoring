@@ -70,7 +70,6 @@ public class CSV {
             escritor.close();
         } catch (Exception e) {
             System.out.println("Ocurrio un error.");
-            e.printStackTrace();
         }
     }
 

@@ -4,8 +4,6 @@
  */
 package Modelo;
 
-import java.util.List;
-
 /**
  *
  * @author omara

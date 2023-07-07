@@ -13,7 +13,6 @@ public class Administrador extends Persona{
     
     private double sueldo;
     private String usuario;
-    private int idAdministrador;
     private String contrasenia;
 
     // Constructor

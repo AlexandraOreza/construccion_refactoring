@@ -2,12 +2,8 @@
 package Modelo;
 
 
-import java.util.ArrayList;
-
-
 public class MetodosCliente implements MetodosDatosPersona {
     private static final String CLIENTE = "cliente";
-    private ArrayList<Object> datosCliente = new ArrayList<>();
     private CSV csv = new CSV();
     private final String nombreArchivo = "Clientes.csv";
     // Constructor vacio
