@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Vista;
-import Modelo.Productos;
+import Modelo.Producto;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
@@ -26,7 +26,7 @@ public class frmVenta extends javax.swing.JFrame {
     double precio=0;
     int cantidad=0;
     DefaultTableModel modelo = new DefaultTableModel();
-    ArrayList<Productos> listaProductos = new ArrayList<Productos>();
+    ArrayList<Producto> listaProductos = new ArrayList<Producto>();
     
     public frmVenta() {
         initComponents();
@@ -313,8 +313,8 @@ public class frmVenta extends javax.swing.JFrame {
     }//GEN-LAST:event_spnCantidadStateChanged
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        Productos producto = new Productos();
-        producto.setClaveP(cboProd.getSelectedIndex());
+        Producto producto = new Producto();
+        producto.setIdProducto(cboProd.getSelectedIndex());
         producto.setDescripcion(cboProd.getSelectedItem().toString());
         producto.setPrecio(precio);
         producto.setCantidad(cantidad);
@@ -372,9 +372,9 @@ public class frmVenta extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_botonRegresarActionPerformed
     
-    public boolean buscarProducto(Productos nuevo){
-        for (Productos p : listaProductos){
-            if(p.getClaveP()==nuevo.getClaveP()){
+    public boolean buscarProducto(Producto nuevo){
+        for (Producto p : listaProductos){
+            if(p.getIdProducto()==nuevo.getIdProducto()){
                 int nuevaCantidad=p.getCantidad()+nuevo.getCantidad();
                 p.setCantidad(nuevaCantidad);
                 p.setImporte(p.getPrecio()*nuevaCantidad);
@@ -413,7 +413,7 @@ public class frmVenta extends javax.swing.JFrame {
             modelo.removeRow(0);
         }
         double subtotal=0;
-        for (Productos p : listaProductos){
+        for (Producto p : listaProductos){
             Object x[] = new Object[4];
             x[0]=p.getDescripcion();
             x[1]=monetario(p.getPrecio());

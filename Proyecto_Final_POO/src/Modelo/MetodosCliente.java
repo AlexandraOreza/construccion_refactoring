@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 
 public class MetodosCliente implements MetodosDatosPersona {
-    public static final String CLIENTE = "cliente";
+    private static final String CLIENTE = "cliente";
     private ArrayList<Object> datosCliente = new ArrayList<>();
     private CSV csv = new CSV();
     private final String nombreArchivo = "Clientes.csv";
@@ -21,7 +21,7 @@ public class MetodosCliente implements MetodosDatosPersona {
 
     @Override
     public void modificarDatosPersona(int id, Object objeto) {
-        csv.modificarFilaDatos(nombreArchivo, id, objeto);
+        csv.modificarFilaDatos(nombreArchivo, id, objeto, CLIENTE);
     }
 
     @Override

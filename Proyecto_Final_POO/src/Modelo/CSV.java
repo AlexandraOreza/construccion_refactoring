@@ -25,6 +25,7 @@ import java.io.IOException;
 public class CSV {
     private static final String CLIENTE = "cliente";
     private static final String ADMINISTRADOR = "administrador";
+    private static final String PRODUCTO = "producto";
     private static final String RUTA_CARPETA = "src/backupFilesTienda/";
     
     public List<String> obtenerDatosArchivo(String nombreArchivoLectura) {
@@ -45,18 +46,26 @@ public class CSV {
         return lineas;
     }
 
-    public void agregarFilaDatos(String nombreArchivo, Object datosNuevaFila, String tipoPersona) {
+    public void agregarFilaDatos(String nombreArchivo, Object datosNuevaFila, String tipoObjeto) {
         File archivoDatos = new File(RUTA_CARPETA+nombreArchivo);
         try {
             FileWriter escritor = new FileWriter(RUTA_CARPETA+nombreArchivo, true);
             if (!archivoDatos.exists()) {
                 escritor.write("\r\n");
             }
-            if ( tipoPersona.equals(ADMINISTRADOR) ) {
-                escritor.append(convertirAdministradorAFilaCsv(datosNuevaFila));
-            } 
-            if ( tipoPersona.equals(CLIENTE) ) {
-                escritor.append((convertirPersonaAFilaCsv(datosNuevaFila) + "\r\n"));
+            switch(tipoObjeto){
+                case ADMINISTRADOR:
+                    escritor.append(convertirAdministradorAFilaCsv(datosNuevaFila));
+                    break;
+                case CLIENTE:
+                    escritor.append((convertirPersonaAFilaCsv(datosNuevaFila)));
+                    break;
+                case PRODUCTO:
+                    escritor.append(convertirObjetoAFilaCsvProducto(datosNuevaFila));
+                    break;
+                default:
+                    System.out.println("Tipo inválido");
+                    break;
             }
             escritor.close();
         } catch (Exception e) {
@@ -65,11 +74,24 @@ public class CSV {
         }
     }
 
-    public void modificarFilaDatos(String fileName, int idFila, Object datosModificados) {
+    public void modificarFilaDatos(String fileName, int idFila, Object datosModificados, String tipoObjeto) {
         List<String> data = obtenerDatosArchivo(fileName);
         if (data != null && idFila >= 0 && idFila <= data.size()) {
             int filaModificar = idFila -1;
-//            data.set(filaModificar, convertirObjetoAFilaCsv(datosModificados));
+            switch(tipoObjeto){
+                case ADMINISTRADOR:
+                    data.set(filaModificar, convertirAdministradorAFilaCsv(datosModificados));
+                    break;
+                case CLIENTE:
+                    data.set(filaModificar, convertirPersonaAFilaCsv(datosModificados));
+                    break;
+                case PRODUCTO:
+                    data.set(filaModificar, convertirObjetoAFilaCsvProducto(datosModificados));
+                    break;
+                default:
+                    System.out.println("Tipo inválido");
+                    break;
+            }
             
             try {
                 FileWriter csvEscritor = new FileWriter(RUTA_CARPETA+fileName, false);
@@ -110,7 +132,20 @@ public class CSV {
             return null;
         }
     }
-        
+    
+     private String convertirObjetoAFilaCsvProducto(Object dataObject) {
+        if (dataObject instanceof Producto) {
+            Producto produc = (Producto) dataObject;
+            return produc.getIdProducto() + ","
+                    + produc.getNombreProducto() + ","
+                    + produc.getCantidad() + ","
+                    + produc.getDescripcion() + ","
+                    + produc.getPrecio() + "\r\n";
+        } else {
+            return null;
+        }
+    }
+
     public void eliminarFilaDatos(String nombreArchivo,int idFila) {
         List<String> data = obtenerDatosArchivo(nombreArchivo);
 

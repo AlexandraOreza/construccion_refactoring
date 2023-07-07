@@ -4,10 +4,8 @@
  */
 package Vista;
 import Modelo.CSV;
-import Modelo.Persona;
 import Modelo.Cliente;        
 import Modelo.MetodosCliente;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;

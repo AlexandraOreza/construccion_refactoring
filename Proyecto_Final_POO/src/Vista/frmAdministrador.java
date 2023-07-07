@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import Modelo.CSV;
+import java.awt.HeadlessException;
 
 /**
  *
@@ -162,8 +163,13 @@ public class frmAdministrador extends javax.swing.JFrame {
             } else if (leerContraseniaTextField().equals("")) {
                 JOptionPane.showMessageDialog(null, "Ingrese la contraseña");
             } else {
-                administrador = new Administrador(leerNombreTextField(), leerApellidoPaternoTextField(), leerApellidoMaternoTextField(), leerSueldoTextField(), leerUsuarioTextField(), leerIDTextField(), leerContraseniaTextField());
-                
+                administrador = new Administrador(leerNombreTextField(), 
+                        leerApellidoPaternoTextField(), 
+                        leerApellidoMaternoTextField(), 
+                        leerSueldoTextField(), 
+                        leerUsuarioTextField(), 
+                        leerIDTextField(), 
+                        leerContraseniaTextField());
                 if (metodosAdministrador.existeId(administrador.getId())) {
                     JOptionPane.showMessageDialog(null, "Este ID ya ha sido asginado");
                 } else {
@@ -204,7 +210,7 @@ public class frmAdministrador extends javax.swing.JFrame {
                 }
             }
         } catch (Exception exception) {
-            JOptionPane.showMessageDialog(null, "No se pudo modificar");
+            JOptionPane.showMessageDialog(null, exception);
         }
     }
 

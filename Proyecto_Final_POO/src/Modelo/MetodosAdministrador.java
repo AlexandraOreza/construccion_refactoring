@@ -18,7 +18,7 @@ public class MetodosAdministrador implements MetodosDatosPersona {
 
     @Override
     public void modificarDatosPersona(int id, Object objeto) {
-        csv.modificarFilaDatos(nombreArchivo, id, objeto);
+        csv.modificarFilaDatos(nombreArchivo, id, objeto, ADMINISTRADOR);
     }
 
     @Override
