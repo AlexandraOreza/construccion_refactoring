@@ -6,6 +6,7 @@ package Modelo;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
 
 /**
  *
@@ -13,9 +14,13 @@ import static org.junit.Assert.*;
  */
 public class AdministradorTest {
     
-    public AdministradorTest() {
-    }
+    private static Administrador admin;
 
+    @Before
+    public void setupClass(){
+        admin = new Administrador("John","Doe","D",100.0,"Jhon",3,"151");
+    }
+    
     /**
      * Test of getContrasenia method, of class Administrador.
      */
@@ -23,8 +28,8 @@ public class AdministradorTest {
     public void testGetContrasenia() {
         System.out.println("getContrasenia");
  
-        String expResult = "123";
-        String result = "123";
+        String expResult = "151";
+        String result = admin.getContrasenia();
         assertEquals(expResult, result);
        
     }
@@ -35,9 +40,10 @@ public class AdministradorTest {
     @Test
     public void testSetContrasenia() {
         System.out.println("setContrasenia");
-        String contrasenia = "";
-        Administrador instance = null;
-        instance.setContrasenia(contrasenia);
+        String contrasenia = "123";
+        admin.setContrasenia(contrasenia);
+        
+        assertEquals(contrasenia, admin.getContrasenia());
        
     }
 
@@ -47,9 +53,8 @@ public class AdministradorTest {
     @Test
     public void testGetSueldo() {
         System.out.println("getSueldo");
-        Administrador instance = null;
-        int expResult = 1000;
-        int result = 1000;
+        double expResult = 100.0;
+        double result = admin.getSueldo();
        
         assertEquals(expResult, result, 0);
        
@@ -61,9 +66,8 @@ public class AdministradorTest {
     @Test
     public void testGetUsuario() {
         System.out.println("getUsuario");
-        Administrador instance = null;
-         String expResult = "Becky";
-        String result = "Becky";
+        String expResult = "Jhon";
+        String result = admin.getUsuario();
         assertEquals(expResult, result);
         
     }
@@ -75,8 +79,8 @@ public class AdministradorTest {
     public void testGetIdAdministrador() {
         System.out.println("getIdAdministrador");
         
-        int expResult = 1;
-        int result = 1;
+        int expResult = 3;
+        int result = admin.getId();
         assertEquals(expResult, result);
         
     }
@@ -88,8 +92,8 @@ public class AdministradorTest {
     public void testSetSueldo() {
         System.out.println("setSueldo");
         double sueldo = 0.0;
-        Administrador instance = null;
-        instance.setSueldo(sueldo);
+        admin.setSueldo(sueldo);
+        assertEquals(sueldo, admin.getSueldo(), 0);
         
     }
 
@@ -99,9 +103,9 @@ public class AdministradorTest {
     @Test
     public void testSetUsuario() {
         System.out.println("setUsuario");
-        String usuario = "";
-        Administrador instance = null;
-        instance.setUsuario(usuario);
+        String usuario = "newName";
+        admin.setUsuario(usuario);
+        assertEquals(usuario, admin.getUsuario());
        
     }    
 }
